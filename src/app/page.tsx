@@ -7,6 +7,64 @@ import { CopyButton } from "@/components/CopyButton";
 import { EmailForm } from "@/components/EmailForm";
 import { HeroCarousel } from "@/components/HeroCarousel";
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Movie",
+  name: "STAGES",
+  alternateName: "STAGES Film",
+  description:
+    "After the tumultuous breakup of his band, Ben Garza embarks on his first-ever solo tour. Life on the road feels different now, and Ben must find his footing alongside Rita, his steadfast tour manager, and Jessie Ramos, his charismatic, spotlight-stealing opening act.",
+  dateCreated: "2026",
+  duration: "PT94M",
+  inLanguage: "en",
+  countryOfOrigin: {
+    "@type": "Country",
+    name: "United States",
+  },
+  director: {
+    "@type": "Person",
+    name: "Ryan Booth",
+  },
+  productionCompany: {
+    "@type": "Organization",
+    name: "Live Nation Studios",
+  },
+  actor: [
+    { "@type": "Person", name: "David Ramirez" },
+    { "@type": "Person", name: "Leslie Grace" },
+    { "@type": "Person", name: "Jolene" },
+    { "@type": "Person", name: "Jake McMullen" },
+    { "@type": "Person", name: "Rafael Casal" },
+    { "@type": "Person", name: "Abner Ramirez" },
+    { "@type": "Person", name: "Amanda Sudano Ramirez" },
+    { "@type": "Person", name: "Jerry Ferrara" },
+    { "@type": "Person", name: "Marc Menchaca" },
+    { "@type": "Person", name: "David Strathairn" },
+  ],
+  image: "https://stagesfilm.com/opengraph.png",
+  url: "https://stagesfilm.com",
+  sameAs: [
+    "https://schedule.sxsw.com/2026/films/2253651",
+  ],
+  event: {
+    "@type": "ScreeningEvent",
+    name: "STAGES — SXSW 2026 World Premiere",
+    startDate: "2026-03-12",
+    endDate: "2026-03-17",
+    location: {
+      "@type": "Place",
+      name: "SXSW Film Festival",
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: "Austin",
+        addressRegion: "TX",
+        addressCountry: "US",
+      },
+    },
+    url: "https://schedule.sxsw.com/2026/films/2253651",
+  },
+};
+
 const screenings = [
   { date: "MAR 12", time: "9:45 PM", venue: "ALAMO LAMAR 7", location: "AUSTIN, TX", href: "https://schedule.sxsw.com/events/FS19955" },
   { date: "MAR 12", time: "9:45 PM", venue: "ALAMO LAMAR 2", location: "AUSTIN, TX", href: "https://schedule.sxsw.com/events/FS19956" },
@@ -81,6 +139,11 @@ const characters: CharacterCard[] = [
 export default function Home() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+
       {/* ═══ HERO ═══════════════════════════════════════════════ */}
       <section className="relative flex flex-col">
         {/* Background image carousel */}

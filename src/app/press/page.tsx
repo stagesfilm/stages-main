@@ -1,4 +1,20 @@
+import type { Metadata } from "next";
 import { Button } from "@/components/Button";
+
+export const metadata: Metadata = {
+  title: "Press & Materials",
+  description:
+    "Press materials, downloadable assets, credits, and contact information for STAGES — a film by Ryan Booth. SXSW 2026 World Premiere.",
+  openGraph: {
+    title: "Press & Materials | STAGES Film",
+    description:
+      "Press materials, downloadable assets, credits, and contact information for STAGES — a film by Ryan Booth. SXSW 2026 World Premiere.",
+    url: "https://stagesfilm.com/press",
+  },
+  alternates: {
+    canonical: "https://stagesfilm.com/press",
+  },
+};
 
 const contacts = [
   {

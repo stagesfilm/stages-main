@@ -1,6 +1,22 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { CopyButton } from "@/components/CopyButton";
+
+export const metadata: Metadata = {
+  title: "Share STAGES",
+  description:
+    "Download and share promotional materials for STAGES — production stills, posters, and assets for social media. A film by Ryan Booth, SXSW 2026.",
+  openGraph: {
+    title: "Share STAGES | Download Promotional Assets",
+    description:
+      "Download and share promotional materials for STAGES — production stills, posters, and assets for social media. A film by Ryan Booth, SXSW 2026.",
+    url: "https://stagesfilm.com/share",
+  },
+  alternates: {
+    canonical: "https://stagesfilm.com/share",
+  },
+};
 
 const assets = [
   {

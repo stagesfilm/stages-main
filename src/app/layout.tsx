@@ -28,12 +28,73 @@ const inter = Inter({
   variable: "--font-inter-family",
 });
 
+const SITE_URL = "https://stagesfilm.com";
+const OG_IMAGE = `${SITE_URL}/opengraph.png`;
+
 export const metadata: Metadata = {
-  title: "STAGES | A Film by Ryan Booth",
-  description: "STAGES — An intimate, observational film. SXSW 2026.",
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: "STAGES | A Film by Ryan Booth — SXSW 2026 World Premiere",
+    template: "%s | STAGES Film",
+  },
+  description:
+    "STAGES is an intimate, observational film by Ryan Booth. After the tumultuous breakup of his band, Ben Garza embarks on his first-ever solo tour. World Premiere at SXSW 2026 in Austin, TX.",
+  keywords: [
+    "STAGES",
+    "STAGES film",
+    "Ryan Booth",
+    "SXSW 2026",
+    "SXSW film",
+    "David Ramirez",
+    "Leslie Grace",
+    "Live Nation Studios",
+    "indie film",
+    "music film",
+    "solo tour",
+    "Austin TX",
+    "world premiere",
+    "film festival",
+  ],
+  authors: [{ name: "Ryan Booth" }],
+  creator: "Ryan Booth",
+  publisher: "Live Nation Studios",
   openGraph: {
-    title: "STAGES | A Film by Ryan Booth",
-    description: "STAGES — An intimate, observational film. SXSW 2026.",
+    type: "website",
+    locale: "en_US",
+    url: SITE_URL,
+    siteName: "STAGES Film",
+    title: "STAGES | A Film by Ryan Booth — SXSW 2026 World Premiere",
+    description:
+      "After the tumultuous breakup of his band, Ben Garza embarks on his first-ever solo tour. An intimate, observational film by Ryan Booth. World Premiere at SXSW 2026.",
+    images: [
+      {
+        url: OG_IMAGE,
+        width: 1200,
+        height: 630,
+        alt: "STAGES — A Film by Ryan Booth. SXSW 2026 World Premiere.",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "STAGES | A Film by Ryan Booth — SXSW 2026",
+    description:
+      "After the tumultuous breakup of his band, Ben Garza embarks on his first-ever solo tour. World Premiere at SXSW 2026 in Austin, TX.",
+    images: [OG_IMAGE],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  alternates: {
+    canonical: SITE_URL,
   },
 };
 
