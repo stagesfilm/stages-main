@@ -1,36 +1,46 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# STAGES — Film Website
+
+A website for **STAGES**, a new film by Ryan Booth. Built for the SXSW 2026 Proof of Concept.
+
+## Routes
+
+- `/` — Home (hero, screenings, about, email signup, share teaser)
+- `/press` — Press & media (contacts, downloads, film facts, credits)
+- `/share` — Share assets (downloadable stills, usage guidelines)
+- `/404` — Not found
+
+## Tech Stack
+
+- **Next.js 16** (App Router)
+- **TypeScript**
+- **Tailwind CSS v4**
 
 ## Getting Started
 
-First, run the development server:
-
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Design System
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **Typography:** IBM Plex Sans (body), Source Serif 4 (editorial)
+- **Colors:** Dark charcoal background (#0d0d0d), muted coral accent (#c94d3c)
+- **Grid:** 8px base, max content width 1200px
 
-## Learn More
+## Assets
 
-To learn more about Next.js, take a look at the following resources:
+Current hero and section images use Unsplash placeholders. Replace with final film stills from the Figma designs:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- [Home/Info](https://www.figma.com/design/8HtUjcVjp9WC6DqEQGzYhg/Untitled?node-id=1-2&m=dev)
+- [Press](https://www.figma.com/design/8HtUjcVjp9WC6DqEQGzYhg/Untitled?node-id=1-211&m=dev)
+- [Share](https://www.figma.com/design/8HtUjcVjp9WC6DqEQGzYhg/Untitled?node-id=1-459&m=dev)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Build
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+npm run build
+npm start
+```

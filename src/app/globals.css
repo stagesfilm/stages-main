@@ -1,26 +1,167 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #0a0a0a;
+  --foreground: #f5f5f5;
+  --accent: #ff5c3d;
+  --accent-hover: #e54f32;
+  --muted: rgba(245, 245, 245, 0.6);
+  --border: rgba(245, 245, 245, 0.2);
+  --card-bg: #111111;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+  --color-card: var(--card-bg);
+  --font-sans: "space-grotesk-variable", system-ui, sans-serif;
+  --font-display: "field-gothic-wide", system-ui, sans-serif;
+  --font-alegreya: var(--font-alegreya-family), Georgia, serif;
+  --font-credits: var(--font-credits-family), system-ui, sans-serif;
+  --font-copse: var(--font-copse-family), Georgia, serif;
+  --font-meta: var(--font-inter-family), "Inter", system-ui, sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+.font-display {
+  font-family: var(--font-display);
+}
+
+.font-alegreya {
+  font-family: var(--font-alegreya);
+}
+
+.font-credits {
+  font-family: var(--font-credits);
+}
+
+.font-copse {
+  font-family: var(--font-copse);
+}
+
+.font-meta {
+  font-family: var(--font-meta);
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ─── Page transitions ────────────────────────────────────────── */
+
+@keyframes pageIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pageOut {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+}
+
+.page-enter {
+  animation: pageIn 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.page-exit {
+  animation: pageOut 0.25s ease both;
+}
+
+/* ─── Hero load-in animations ─────────────────────────────── */
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.animate-fade-up {
+  animation: fadeUp 0.7s ease both;
+}
+
+.animate-delay-100 { animation-delay: 0.1s; }
+.animate-delay-200 { animation-delay: 0.2s; }
+.animate-delay-300 { animation-delay: 0.3s; }
+.animate-delay-400 { animation-delay: 0.4s; }
+.animate-delay-500 { animation-delay: 0.5s; }
+.animate-delay-600 { animation-delay: 0.6s; }
+
+/* ─── Scroll reveal ────────────────────────────────────────── */
+
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.65s ease, transform 0.65s ease;
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reveal-slow {
+  transition-duration: 0.9s;
+}
+
+/* ─── Featuring deck tabs ─────────────────────────────────── */
+
+.deck-tab {
+  cursor: pointer;
+  transition: background-color 0.25s ease,
+              transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+              box-shadow 0.3s ease;
+}
+
+.deck-tab:hover {
+  transform: translateX(4px);
+}
+
+/* ─── Card expand animation ──────────────────────────────── */
+
+@keyframes cardExpand {
+  from {
+    opacity: 0;
+    transform: translateY(-12px) scale(0.995);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.card-expand {
+  animation: cardExpand 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
