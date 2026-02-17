@@ -183,8 +183,8 @@ export default function Home() {
                 After the tumultuous breakup of his band, Ben Garza embarks on
                 his first-ever solo tour. Life on the road feels different now,
                 and Ben must find his footing alongside Rita, his steadfast tour
-                manager, and Jessie Ramos, his charismatic, spotlight-stealing
-                opening act.
+                manager, and Jessie Ramos, his charismatic,
+                spotlight-stealing&nbsp;opening&nbsp;act.
               </p>
 
               <div className="flex flex-col gap-[35px]">
