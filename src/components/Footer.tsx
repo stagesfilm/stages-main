@@ -1,5 +1,8 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { hasUpcomingScreenings } from "@/lib/screenings";
 
 const studioLogos = [
   { src: "/studio-logos/Logo-LiveNationStudios 1.svg", alt: "Live Nation Studios", width: 160, height: 40 },
@@ -79,7 +82,7 @@ export function Footer() {
             <div className="flex flex-col gap-[8px]">
               {[
                 { label: "Info", href: "/" },
-                { label: "Screenings", href: "/#screenings" },
+                ...(hasUpcomingScreenings() ? [{ label: "Screenings", href: "/#screenings" }] : []),
                 { label: "Press", href: "/press" },
                 { label: "Share", href: "/share" },
               ].map((link) => (
@@ -118,7 +121,7 @@ export function Footer() {
         {/* Bottom bar — centered on mobile */}
         <div className="border-t border-[rgba(245,245,245,0.1)] mt-[64px] py-5 md:py-0 md:h-[49px] flex flex-col md:flex-row items-center md:justify-between gap-3 md:gap-0">
           <p className="font-meta text-foreground/40 text-[11px] md:text-[12px] tracking-[0.3px] text-center md:text-left">
-            © 2026 STAGES Film. ALL RIGHTS RESERVED.
+            © {new Date().getFullYear()} STAGES Film. ALL RIGHTS RESERVED.
           </p>
           <div className="flex flex-wrap justify-center md:justify-end gap-x-[20px] gap-y-[8px]">
             <a href="#" className="font-meta text-foreground/60 text-[11px] md:text-[12px] tracking-[0.3px] hover:text-foreground transition-colors">

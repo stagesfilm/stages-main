@@ -3,13 +3,17 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useState, useEffect, useCallback } from "react";
+import { hasUpcomingScreenings } from "@/lib/screenings";
 
-const navLinks = [
-  { href: "/", label: "INFO" },
-  { href: "/#screenings", label: "SCREENINGS" },
-  { href: "/press", label: "PRESS" },
-  { href: "/share", label: "SHARE" },
-];
+function getNavLinks() {
+  const links = [
+    { href: "/", label: "INFO" },
+    ...(hasUpcomingScreenings() ? [{ href: "/#screenings", label: "SCREENINGS" }] : []),
+    { href: "/press", label: "PRESS" },
+    { href: "/share", label: "SHARE" },
+  ];
+  return links;
+}
 
 export function Header() {
   const pathname = usePathname();
@@ -68,7 +72,7 @@ export function Header() {
 
         {/* Desktop nav */}
         <nav className="hidden md:flex items-center gap-[32px]">
-          {navLinks.map((link) => {
+          {getNavLinks().map((link) => {
             const isActive =
               (link.href === "/" && pathname === "/") ||
               (link.href !== "/" && pathname.startsWith(link.href.split("#")[0]) && link.href.split("#")[0] !== "/");
@@ -116,7 +120,7 @@ export function Header() {
       {/* Mobile menu */}
       {mobileOpen && (
         <nav className="md:hidden border-t border-border bg-background px-6 py-6 flex flex-col gap-5">
-          {navLinks.map((link) => (
+          {getNavLinks().map((link) => (
             <Link
               key={link.href}
               href={link.href}
