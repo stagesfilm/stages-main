@@ -1,23 +1,6 @@
-import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { CopyButton } from "@/components/CopyButton";
 import { CopyIconButton } from "@/components/CopyIconButton";
-
-export const metadata: Metadata = {
-  title: "Share STAGES",
-  description:
-    "Download and share promotional materials for STAGES — production stills, posters, and assets for social media. A film by Ryan Booth, SXSW 2026.",
-  openGraph: {
-    title: "Share STAGES | Download Promotional Assets",
-    description:
-      "Download and share promotional materials for STAGES — production stills, posters, and assets for social media. A film by Ryan Booth, SXSW 2026.",
-    url: "https://stagesfilm.com/share",
-  },
-  alternates: {
-    canonical: "https://stagesfilm.com/share",
-  },
-};
 
 const pressAds = [
   "/press-ads/01-StagesPoster.png",
@@ -34,11 +17,8 @@ export default function SharePage() {
   return (
     <>
       {/* Intro */}
-      <section className="pt-[120px] pb-20 bg-background">
+      <section className="pt-[148px] pb-20 bg-background">
         <div className="w-full px-6 md:px-[80px]">
-          <p className="font-meta text-muted text-xs tracking-[0.3px] uppercase mb-4">
-            Share
-          </p>
           <h1
             className="font-display text-foreground leading-none tracking-[-1px] mb-6"
             style={{ fontSize: "clamp(2.5rem, 8vw, 5rem)" }}
@@ -54,7 +34,7 @@ export default function SharePage() {
       </section>
 
       {/* Press Ads */}
-      <section className="py-16 border-t border-border">
+      <section id="press-promotional" className="py-16 border-t border-border scroll-mt-[80px]">
         <div className="w-full px-6 md:px-[80px]">
           <h2 className="font-meta text-[10px] tracking-[0.5px] text-muted uppercase mb-10">
             Press &amp; Promotional
@@ -94,7 +74,7 @@ export default function SharePage() {
       </section>
 
       {/* Press Stills */}
-      <section className="py-16 border-t border-border">
+      <section id="production-stills" className="py-16 border-t border-border scroll-mt-[80px]">
         <div className="w-full px-6 md:px-[80px]">
           <h2 className="font-meta text-[10px] tracking-[0.5px] text-muted uppercase mb-10">
             Production Stills
@@ -174,15 +154,12 @@ export default function SharePage() {
             >
               SEE STAGES AT SXSW 2026
             </h2>
-            <div className="flex flex-col sm:flex-row gap-3">
-              <Link
-                href="/#screenings"
-                className="font-meta inline-flex items-center justify-center h-[52px] px-8 border border-[#0a0a0a] text-[#0a0a0a] font-bold text-sm tracking-[0.35px] hover:bg-[#0a0a0a] hover:text-foreground transition-colors"
-              >
-                VIEW SCREENINGS
-              </Link>
-              <CopyButton url="https://stagesfilm.com" />
-            </div>
+            <Link
+              href="/#screenings"
+              className="font-meta inline-flex items-center justify-center h-[52px] px-8 border border-[#0a0a0a] text-[#0a0a0a] font-bold text-sm tracking-[0.35px] hover:bg-[#0a0a0a] hover:text-foreground transition-colors w-fit"
+            >
+              VIEW SCREENINGS
+            </Link>
           </div>
         </div>
       </section>

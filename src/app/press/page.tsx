@@ -1,20 +1,5 @@
-import type { Metadata } from "next";
+import Link from "next/link";
 import { Button } from "@/components/Button";
-
-export const metadata: Metadata = {
-  title: "Press & Materials",
-  description:
-    "Press materials, downloadable assets, credits, and contact information for STAGES — a film by Ryan Booth. SXSW 2026 World Premiere.",
-  openGraph: {
-    title: "Press & Materials | STAGES Film",
-    description:
-      "Press materials, downloadable assets, credits, and contact information for STAGES — a film by Ryan Booth. SXSW 2026 World Premiere.",
-    url: "https://stagesfilm.com/press",
-  },
-  alternates: {
-    canonical: "https://stagesfilm.com/press",
-  },
-};
 
 const contacts = [
   {
@@ -45,25 +30,15 @@ const contacts = [
 
 const downloads = [
   {
-    title: "Electronic Press Kit",
-    description: "Complete press materials, synopsis, and key art",
-    href: "#",
+    title: "Press & Promotional",
+    description: "Poster, social assets, and key art",
+    href: "/share#press-promotional",
   },
   {
     title: "Production Stills",
     description: "High-resolution images for editorial use",
-    href: "#",
+    href: "/share#production-stills",
   },
-  // {
-  //   title: "Official Poster",
-  //   description: "Print-ready poster in multiple formats",
-  //   href: "#",
-  // },
-  // {
-  //   title: "Festival Laurels",
-  //   description: "SXSW 2026 graphics and logos",
-  //   href: "#",
-  // },
 ];
 
 const filmFacts = [
@@ -100,11 +75,8 @@ export default function PressPage() {
   return (
     <>
       {/* Press Header */}
-      <section className="pt-[120px] pb-20 bg-background">
+      <section className="pt-[148px] pb-20 bg-background">
         <div className="w-full px-6 md:px-[80px]">
-          <p className="font-meta text-muted text-xs tracking-[0.3px] uppercase mb-4">
-            Press & Media
-          </p>
           <h1
             className="font-display text-foreground leading-none tracking-[-1px] mb-6"
             style={{ fontSize: "clamp(2.5rem, 8vw, 5rem)" }}
@@ -155,7 +127,7 @@ export default function PressPage() {
           </h2>
           <div className="grid md:grid-cols-2 gap-4">
             {downloads.map((item) => (
-              <a
+              <Link
                 key={item.title}
                 href={item.href}
                 className="group flex items-center justify-between gap-4 p-6 bg-card border border-border hover:border-accent/50 transition-all duration-200"
@@ -166,10 +138,10 @@ export default function PressPage() {
                 </div>
                 <span className="shrink-0 w-10 h-10 flex items-center justify-center border border-border group-hover:border-accent transition-colors">
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
                   </svg>
                 </span>
-              </a>
+              </Link>
             ))}
           </div>
         </div>
