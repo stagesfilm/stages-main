@@ -1,9 +1,12 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import { Alegreya, Sofia_Sans_Extra_Condensed, Copse, Inter, Reenie_Beanie } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { PageTransition } from "@/components/PageTransition";
+
+const GA_ID = "G-5KDEP34PFL";
 
 const alegreya = Alegreya({
   weight: ["400", "700"],
@@ -120,14 +123,15 @@ export default function RootLayout({
     <html lang="en" className={`${alegreya.variable} ${sofiaSansEC.variable} ${copse.variable} ${inter.variable} ${reenieBeanie.variable}`}>
       <head>
         <link rel="stylesheet" href="https://use.typekit.net/qae3akf.css" />
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-5KDEP34PFL" />
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-5KDEP34PFL');`,
-          }}
-        />
       </head>
       <body className="antialiased font-sans">
+        <Script
+          src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
+          strategy="afterInteractive"
+        />
+        <Script id="ga4-init" strategy="afterInteractive">
+          {`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','${GA_ID}');`}
+        </Script>
         <Header />
         <main className="min-h-screen">
           <PageTransition>{children}</PageTransition>
