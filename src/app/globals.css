@@ -141,6 +141,16 @@ body {
   transition-duration: 0.9s;
 }
 
+/* ─── Hero video YT player fill ─────────────────────────── */
+.hero-yt-wrapper > div,
+.hero-yt-wrapper iframe {
+  width: 100% !important;
+  height: 100% !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+}
+
 /* ─── Polaroid gallery ───────────────────────────────────── */
 
 .polaroid-card {

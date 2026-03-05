@@ -88,6 +88,8 @@ export function HeroVideo() {
       containerRef.current.appendChild(el);
       playerRef.current = new window.YT.Player(el, {
         videoId: YOUTUBE_ID,
+        width: "100%",
+        height: "100%",
         playerVars: {
           autoplay: 1, mute: 1, controls: 0, showinfo: 0,
           modestbranding: 1, rel: 0, playsinline: 1,
@@ -128,10 +130,9 @@ export function HeroVideo() {
           className="absolute inset-0 pointer-events-none"
           style={{ opacity: isPlaying ? 1 : 0, transition: "opacity 1s ease-in-out" }}
         >
-          {/* Sized to exactly cover the container at 16:9, centered */}
           <div
             ref={containerRef}
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 [&>div]:!w-full [&>div]:!h-full [&_iframe]:w-full [&_iframe]:h-full"
+            className="hero-yt-wrapper absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
             style={coverSize}
           />
         </div>

@@ -18,10 +18,17 @@ export async function POST(req: NextRequest) {
   }
 
   try {
+    const body = new URLSearchParams({
+      [ENTRY_ID]: email,
+      fvv: "1",
+      draftResponse: "[]",
+      pageHistory: "0",
+    });
+
     const res = await fetch(FORM_URL, {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: `${ENTRY_ID}=${encodeURIComponent(email)}`,
+      body: body.toString(),
     });
 
     if (!res.ok) throw new Error(`Form responded ${res.status}`);
