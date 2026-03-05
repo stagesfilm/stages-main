@@ -35,7 +35,7 @@ const reenieBeanie = Reenie_Beanie({
 });
 
 const SITE_URL = "https://stagesfilm.com";
-const OG_IMAGE = `${SITE_URL}/opengraph.png`;
+const OG_IMAGE = `${SITE_URL}/opengraph.png?v=2`;
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
