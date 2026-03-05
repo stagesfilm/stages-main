@@ -300,12 +300,20 @@ export default function Home() {
                 Director&apos;s Note
               </p>
               <p className="text-foreground/90 text-[16px] md:text-[20px] leading-[26px] md:leading-[32.5px] reveal">
-                &ldquo;STAGES, my debut feature, a story nearly a decade in the
-                making, that has mirrored my own journey in so many ways, is making
-                its World Premiere at SXSW in just a few weeks. STAGES tells the
-                story of two mid-career musicians navigating the uphill journey of
-                starting over and touring under their own names for the first
-                time.&rdquo;
+                &ldquo;My love of music is where this film begins. Before I ever
+                called myself a filmmaker, I was an audio engineer in recording
+                studios in Texas and Nashville, spending years watching musicians
+                step up to a microphone and try to capture something honest. Over
+                the last decade I&apos;ve had the chance to work with artists across
+                the entire spectrum of the industry&mdash;from global stars to the
+                incredible musicians who spend their lives touring small rooms and
+                fighting to be heard. Artists like David Ramirez, who I&apos;ve
+                known and worked alongside for years. Those relationships, and the
+                time spent in green rooms, on stages, and on long drives between
+                shows, shaped the DNA of this film. STAGES is my attempt to bring
+                the lives and struggles of musicians like David&mdash;and the beauty
+                and vulnerability of live performance&mdash;to a wider
+                audience.&rdquo;
               </p>
               <p className="text-foreground font-bold text-[14px] leading-[20px] reveal">
                 — RYAN BOOTH
