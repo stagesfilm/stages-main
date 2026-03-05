@@ -97,9 +97,9 @@ export default function PressPage() {
           <h2 className="font-meta text-[10px] tracking-[0.5px] text-muted uppercase mb-10">
             Contact
           </h2>
-          <div className="grid md:grid-cols-4 gap-10">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-10">
             {contacts.map((contact) => (
-              <div key={contact.title}>
+              <div key={contact.title} className="min-w-0">
                 <p className="font-meta text-[10px] tracking-[0.5px] text-muted uppercase mb-2">
                   {contact.title}
                 </p>
@@ -108,7 +108,7 @@ export default function PressPage() {
                 {contact.email && (
                   <a
                     href={`mailto:${contact.email}`}
-                    className="text-sm text-accent hover:text-accent-hover transition-colors underline"
+                    className="text-sm text-accent hover:text-accent-hover transition-colors underline break-all"
                   >
                     {contact.email}
                   </a>

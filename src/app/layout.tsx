@@ -120,6 +120,12 @@ export default function RootLayout({
     <html lang="en" className={`${alegreya.variable} ${sofiaSansEC.variable} ${copse.variable} ${inter.variable} ${reenieBeanie.variable}`}>
       <head>
         <link rel="stylesheet" href="https://use.typekit.net/qae3akf.css" />
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-5KDEP34PFL" />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-5KDEP34PFL');`,
+          }}
+        />
       </head>
       <body className="antialiased font-sans">
         <Header />
