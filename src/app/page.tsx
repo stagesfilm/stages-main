@@ -331,16 +331,8 @@ export default function Home() {
         </ScrollReveal>
       </section>
 
-      {/* ═══ FULL-WIDTH IMAGE ══════════════════════════════════ */}
-      <div className="relative w-full aspect-[1470/1005] max-h-[70vh]">
-        <Image
-          src="/david-on-stage.png"
-          alt="David Ramirez performing live"
-          fill
-          className="object-cover object-center"
-          sizes="100vw"
-        />
-      </div>
+      {/* ═══ FEATURING ═══════════════════════════════════════ */}
+      <FeaturingSection characters={characters} />
 
       {/* ═══ ABOUT THE FILM ═══════════════════════════════════ */}
       <section className="bg-background py-[140px] px-6 md:px-[80px]">
@@ -373,17 +365,6 @@ export default function Home() {
         </ScrollReveal>
       </section>
 
-      {/* ═══ FULL-WIDTH IMAGE ══════════════════════════════════ */}
-      <div className="relative w-full aspect-[1470/1008] max-h-[70vh]">
-        <Image
-          src="/david-with-gear.png"
-          alt="On the road with STAGES"
-          fill
-          className="object-cover object-center"
-          sizes="100vw"
-        />
-      </div>
-
       {/* ═══ DIRECTOR'S NOTE ═════════════════════════════════ */}
       <section className="bg-background pt-[81px] pb-[80px]">
         <ScrollReveal>
@@ -407,9 +388,6 @@ export default function Home() {
           </div>
         </ScrollReveal>
       </section>
-
-      {/* ═══ FEATURING ═══════════════════════════════════════ */}
-      <FeaturingSection characters={characters} />
 
       {/* ═══ STAY UPDATED ════════════════════════════════════ */}
       <section id="updates" className="bg-accent pt-[80px] pb-[80px]">
