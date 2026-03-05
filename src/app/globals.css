@@ -24,6 +24,7 @@
   --font-credits: var(--font-credits-family), system-ui, sans-serif;
   --font-copse: var(--font-copse-family), Georgia, serif;
   --font-meta: var(--font-inter-family), "Inter", system-ui, sans-serif;
+  --font-handwritten: var(--font-handwritten-family), "Reenie Beanie", cursive;
 }
 
 .font-display {
@@ -44,6 +45,10 @@
 
 .font-meta {
   font-family: var(--font-meta);
+}
+
+.font-handwritten {
+  font-family: var(--font-handwritten);
 }
 
 html {
@@ -136,32 +141,31 @@ body {
   transition-duration: 0.9s;
 }
 
-/* ─── Featuring deck tabs ─────────────────────────────────── */
+/* ─── Polaroid gallery ───────────────────────────────────── */
 
-.deck-tab {
+.polaroid-card {
   cursor: pointer;
-  transition: background-color 0.25s ease,
-              transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
-              box-shadow 0.3s ease;
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+              box-shadow 0.35s ease,
+              z-index 0s;
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.12));
 }
 
-.deck-tab:hover {
-  transform: translateX(4px);
+.polaroid-card:hover {
+  filter: drop-shadow(0 8px 24px rgba(0, 0, 0, 0.18));
 }
 
-/* ─── Card expand animation ──────────────────────────────── */
+.polaroid-frame {
+  width: 160px;
+  padding: 10px 10px 6px;
+  background-image: url("/polaroid-texture.jpg");
+  background-size: cover;
+  background-position: center;
+}
 
-@keyframes cardExpand {
-  from {
-    opacity: 0;
-    transform: translateY(-12px) scale(0.995);
+@media (min-width: 768px) {
+  .polaroid-frame {
+    width: 220px;
+    padding: 14px 14px 8px;
   }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-}
-
-.card-expand {
-  animation: cardExpand 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
 }

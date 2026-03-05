@@ -3,8 +3,36 @@
 import Image from "next/image";
 import { useState, useEffect } from "react";
 
+const HERO_IMAGES = [
+  "/hero/STAGES-1.jpg",
+  "/hero/STAGES-2.jpg",
+  "/hero/STAGES-3.jpg",
+  "/hero/STAGES-5.jpg",
+  "/hero/STAGES-6.jpg",
+  "/hero/STAGES-8.jpg",
+  "/hero/STAGES-9.jpg",
+  "/hero/STAGES-17.jpg",
+  "/hero/STAGES-24.jpg",
+  "/hero/STAGES-29.jpg",
+  "/hero/STAGES-32.jpg",
+  "/hero/STAGES-43.jpg",
+];
+
+// Deterministic shuffle using a fixed seed so the order is consistent per session
+function seededShuffle<T>(arr: T[], seed: number): T[] {
+  const result = [...arr];
+  let s = seed;
+  for (let i = result.length - 1; i > 0; i--) {
+    s = (s * 1664525 + 1013904223) & 0xffffffff;
+    const j = Math.abs(s) % (i + 1);
+    [result[i], result[j]] = [result[j], result[i]];
+  }
+  return result;
+}
+
 const IMAGES = [
   "/home-hero.png",
+  ...seededShuffle(HERO_IMAGES, 42),
   "/david-with-gear.png",
   "/david-on-stage.png",
   "/david-singing.png",

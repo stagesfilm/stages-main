@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Alegreya, Sofia_Sans_Extra_Condensed, Copse, Inter } from "next/font/google";
+import { Alegreya, Sofia_Sans_Extra_Condensed, Copse, Inter, Reenie_Beanie } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
@@ -26,6 +26,12 @@ const copse = Copse({
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter-family",
+});
+
+const reenieBeanie = Reenie_Beanie({
+  weight: "400",
+  subsets: ["latin"],
+  variable: "--font-handwritten-family",
 });
 
 const SITE_URL = "https://stagesfilm.com";
@@ -104,7 +110,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${alegreya.variable} ${sofiaSansEC.variable} ${copse.variable} ${inter.variable}`}>
+    <html lang="en" className={`${alegreya.variable} ${sofiaSansEC.variable} ${copse.variable} ${inter.variable} ${reenieBeanie.variable}`}>
       <head>
         <link rel="stylesheet" href="https://use.typekit.net/qae3akf.css" />
       </head>

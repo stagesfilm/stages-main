@@ -77,17 +77,22 @@ const filmFacts = [
 
 const credits = [
   { role: "Director", name: "Ryan Booth" },
-  { role: "Executive Producer", name: "Ryan Booth, Michael Rapino" },
-  { role: "Producer", name: "Val Hill, Morgan Stevenson Cooper, Jolene Rapino, Russell Wayne Groves" },
-  { role: "Screenwriter", name: "Bradley Jackson, Dan Steele" },
-  { role: "Cinematography", name: "Patrick Bolen" },
-  { role: "Editor", name: "Laura Ranger" },
+  { role: "Writers", name: "Bradley Jackson, Dan Steele" },
+  { role: "Producers", name: "Val Hill, Jolene, Morgan Stephenson Cooper, Russell Wayne Groves" },
+  { role: "Executive Producers", name: "Michael Rapino, Ryan Kroft, Jessica James Batista, Vaughn Trudeau" },
+  { role: "Co-Executive Producers", name: "Abner Ramirez, Amanda Sudano Ramirez" },
+  { role: "Director of Photography", name: "Patrick Golan" },
   { role: "Production Designer", name: "Thoa Nguyen" },
-  { role: "Score", name: "Mark Bartels, Steve Home, Beth Davis" },
-  { role: "Music", name: "David Ramirez, Steve Green" },
+  { role: "Editor", name: "Lucas Harger" },
+  { role: "Costume Designer", name: "Wlaa Elashkar" },
+  { role: "Music Composer", name: "Giosue Greco" },
+  { role: "Casting Director", name: "Amey Rene" },
+  { role: "Original Music", name: "David Ramirez" },
+  { role: "Additional Original Music", name: "David Ramirez, Malay, Abner Ramirez" },
+  { role: "Additional Live Production", name: "Jake McMullen, Christian Harger" },
   {
     role: "Cast",
-    name: "David Ramirez, Leslie Grace, Jolene, Jane McMullen, Rafael Cueva, Xavier Ramirez, Amanda Sudano Ramirez, Jerry Ferrera, Marc Menchaca, David Strathairn",
+    name: "David Ramirez, Leslie Grace, Jolene, Jake McMullen, Abner Ramirez, Rafael Casal, Amanda Sudano Ramirez, Marc Menchaca, David Strathairn, Jerry Ferrara",
   },
 ];
 
