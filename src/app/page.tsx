@@ -66,9 +66,9 @@ const jsonLd = {
 };
 
 const screenings = [
-  { date: "MAR 12", time: "9:45 PM", venue: "ALAMO LAMAR 7", location: "AUSTIN, TX", href: "https://schedule.sxsw.com/events/FS19955" },
+  { date: "MAR 12", time: "9:45 PM", venue: "ALAMO LAMAR 7", location: "AUSTIN, TX", href: "https://schedule.sxsw.com/events/FS19955", note: "*Q&A to follow with cast and filmmakers" },
   { date: "MAR 12", time: "9:45 PM", venue: "ALAMO LAMAR 2", location: "AUSTIN, TX", href: "https://schedule.sxsw.com/events/FS19956" },
-  { date: "MAR 14", time: "3:30 PM", venue: "VIOLET CROWN 1", location: "AUSTIN, TX", href: "https://schedule.sxsw.com/events/FS19957" },
+  { date: "MAR 14", time: "3:30 PM", venue: "VIOLET CROWN 1", location: "AUSTIN, TX", href: "https://schedule.sxsw.com/events/FS19957", note: "*Q&A to follow with cast and filmmakers" },
   { date: "MAR 14", time: "3:30 PM", venue: "VIOLET CROWN 3", location: "AUSTIN, TX", href: "https://schedule.sxsw.com/events/FS19958" },
   { date: "MAR 17", time: "9:30 PM", venue: "ROLLINS THEATRE", location: "AUSTIN, TX", href: "https://schedule.sxsw.com/events/FS19959" },
 ];
@@ -281,22 +281,29 @@ export default function Home() {
                 style={{ transitionDelay: `${i * 60}ms` }}
               >
                 {/* Desktop row */}
-                <div className="hidden md:flex items-center h-[49px]">
-                  <span className="font-meta font-bold text-foreground text-[16px] leading-[24px] pl-[24px] w-[224px] shrink-0">
-                    {s.date}
-                  </span>
-                  <span className="font-meta text-foreground text-[16px] leading-[24px] w-[224px] shrink-0">
-                    {s.time}
-                  </span>
-                  <span className="font-meta font-bold text-foreground text-[16px] leading-[24px] flex-1">
-                    {s.venue}
-                  </span>
-                  <span className="font-meta text-foreground/60 text-[16px] leading-[24px] w-[320px] shrink-0">
-                    {s.location}
-                  </span>
-                  <span className="font-meta text-accent text-[14px] font-bold tracking-[0.35px] w-[96px] shrink-0 text-right group-hover:translate-x-1 transition-transform">
-                    TICKETS →
-                  </span>
+                <div className="hidden md:block">
+                  <div className="flex items-center h-[49px]">
+                    <span className="font-meta font-bold text-foreground text-[16px] leading-[24px] pl-[24px] pr-[16px] lg:pr-[20px] whitespace-nowrap shrink-0">
+                      {s.date}
+                    </span>
+                    <span className="font-meta text-foreground text-[16px] leading-[24px] pr-[16px] lg:pr-[20px] whitespace-nowrap shrink-0">
+                      {s.time}
+                    </span>
+                    <span className="font-meta font-bold text-foreground text-[16px] leading-[24px] flex-1 truncate min-w-0">
+                      {s.venue}
+                    </span>
+                    <span className="font-meta text-foreground/60 text-[16px] leading-[24px] px-[16px] lg:px-[20px] whitespace-nowrap shrink-0">
+                      {s.location}
+                    </span>
+                    <span className="font-meta text-accent text-[14px] font-bold tracking-[0.35px] whitespace-nowrap shrink-0 text-right group-hover:translate-x-1 transition-transform">
+                      TICKETS →
+                    </span>
+                  </div>
+                  {s.note && (
+                    <p className="font-meta text-foreground/40 text-[12px] leading-[16px] italic pl-[24px] pb-[10px] -mt-[4px]">
+                      {s.note}
+                    </p>
+                  )}
                 </div>
 
                 {/* Mobile card */}
@@ -308,6 +315,11 @@ export default function Home() {
                     <span className="font-meta font-bold text-foreground text-[15px] leading-[20px]">
                       {s.venue}
                     </span>
+                    {s.note && (
+                      <span className="font-meta text-foreground/40 text-[12px] leading-[16px] italic mt-[2px]">
+                        {s.note}
+                      </span>
+                    )}
                   </div>
                   <span className="font-meta text-accent text-[13px] font-bold tracking-[0.35px] shrink-0 group-hover:translate-x-1 transition-transform">
                     TICKETS →

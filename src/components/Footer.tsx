@@ -1,4 +1,12 @@
+import Image from "next/image";
 import Link from "next/link";
+
+const studioLogos = [
+  { src: "/studio-logos/Logo-LiveNationStudios 1.svg", alt: "Live Nation Studios", width: 160, height: 40 },
+  { src: "/studio-logos/Logo-TheRanch-White 1.svg", alt: "The Ranch Productions", width: 120, height: 40 },
+  { src: "/studio-logos/Logo-1614Entertainment 1.svg", alt: "1614 Entertainment", width: 100, height: 40 },
+  { src: "/studio-logos/Logo-Blase 1.svg", alt: "Blasé", width: 80, height: 40 },
+];
 
 export function Footer() {
   return (
@@ -13,8 +21,22 @@ export function Footer() {
         />
       </div>
 
+      {/* ── Studio logos ── */}
+      <div className="mt-[48px] px-6 md:px-[80px] flex flex-wrap items-center justify-center gap-x-[40px] md:gap-x-[56px] gap-y-[24px]">
+        {studioLogos.map((logo) => (
+          <Image
+            key={logo.alt}
+            src={logo.src}
+            alt={logo.alt}
+            width={logo.width}
+            height={logo.height}
+            className="h-[28px] md:h-[36px] w-auto opacity-60"
+          />
+        ))}
+      </div>
+
       {/* ── Footer links ── */}
-      <div className="mt-[90px] px-6 md:px-[80px]">
+      <div className="mt-[64px] px-6 md:px-[80px]">
         {/* Mobile: stacked layout / Desktop: 4-col grid */}
 
         {/* STAGES wordmark — centered on mobile, part of grid on desktop */}
