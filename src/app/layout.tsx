@@ -34,7 +34,8 @@ const reenieBeanie = Reenie_Beanie({
   variable: "--font-handwritten-family",
 });
 
-const SITE_URL = "https://stagesfilm.com";
+const SITE_URL = "https://stages.movie";
+const OG_IMAGE = `${SITE_URL}/opengraph.png`;
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -71,12 +72,28 @@ export const metadata: Metadata = {
     title: "STAGES | A Film by Ryan Booth — SXSW 2026 World Premiere",
     description:
       "After the tumultuous breakup of his band, Ben Garza embarks on his first-ever solo tour. An intimate, observational film by Ryan Booth. World Premiere at SXSW 2026.",
+    images: [
+      {
+        url: OG_IMAGE,
+        width: 1440,
+        height: 810,
+        alt: "STAGES — A Film by Ryan Booth. SXSW 2026 World Premiere.",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "STAGES | A Film by Ryan Booth — SXSW 2026",
     description:
       "After the tumultuous breakup of his band, Ben Garza embarks on his first-ever solo tour. World Premiere at SXSW 2026 in Austin, TX.",
+    images: [
+      {
+        url: OG_IMAGE,
+        width: 1440,
+        height: 810,
+        alt: "STAGES — A Film by Ryan Booth. SXSW 2026 World Premiere.",
+      },
+    ],
   },
   robots: {
     index: true,
