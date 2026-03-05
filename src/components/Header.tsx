@@ -91,13 +91,6 @@ export function Header() {
               </Link>
             );
           })}
-          <Link
-            href="/#updates"
-            onClick={(e) => handleNavClick(e, "/#updates")}
-            className="font-meta text-sm font-bold tracking-[0.35px] text-foreground/90 hover:text-foreground transition-colors"
-          >
-            UPDATES
-          </Link>
         </nav>
 
         {/* Mobile hamburger */}
@@ -133,16 +126,6 @@ export function Header() {
               {link.label}
             </Link>
           ))}
-          <Link
-            href="/#updates"
-            className="font-meta text-sm font-bold tracking-[0.35px] text-foreground"
-            onClick={(e) => {
-              handleNavClick(e, "/#updates");
-              setMobileOpen(false);
-            }}
-          >
-            UPDATES
-          </Link>
           <Link
             href="https://schedule.sxsw.com/2026/films/2253651"
             target="_blank"
