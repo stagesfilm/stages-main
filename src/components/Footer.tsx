@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
 import { hasUpcomingScreenings } from "@/lib/screenings";
 
 const studioLogos = [
@@ -10,6 +11,60 @@ const studioLogos = [
   { src: "/studio-logos/Logo-1614Entertainment 1.svg", alt: "1614 Entertainment", width: 100, height: 40 },
   { src: "/studio-logos/Logo-Blase 1.svg", alt: "Blasé", width: 80, height: 40 },
 ];
+
+function FooterSubscribe() {
+  const [email, setEmail] = useState("");
+  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (status === "loading" || status === "success") return;
+    setStatus("loading");
+    try {
+      const res = await fetch("/api/subscribe", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error ?? "Failed");
+      setStatus("success");
+      setEmail("");
+    } catch {
+      setStatus("error");
+      setTimeout(() => setStatus("idle"), 4000);
+    }
+  };
+
+  if (status === "success") {
+    return (
+      <p className="font-meta text-foreground text-[12px] font-bold h-[40px] flex items-center">
+        ✓ YOU&apos;RE ON THE LIST
+      </p>
+    );
+  }
+
+  return (
+    <form className="flex flex-col gap-[12px] w-full max-w-[320px] md:max-w-none" onSubmit={handleSubmit}>
+      <input
+        type="email"
+        placeholder="EMAIL ADDRESS"
+        required
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        disabled={status === "loading"}
+        className="font-meta h-[46px] px-[16px] py-[12px] bg-[rgba(245,245,245,0.05)] border border-[rgba(245,245,245,0.2)] text-foreground placeholder:text-[rgba(245,245,245,0.5)] text-[12px] focus:outline-none disabled:opacity-60"
+      />
+      <button
+        type="submit"
+        disabled={status === "loading"}
+        className="font-meta h-[40px] px-[16px] py-[12px] bg-foreground text-[#0a0a0a] text-[12px] font-bold tracking-[0.3px] text-center hover:bg-foreground/90 transition-colors disabled:opacity-60"
+      >
+        {status === "loading" ? "..." : status === "error" ? "TRY AGAIN" : "SUBSCRIBE"}
+      </button>
+    </form>
+  );
+}
 
 export function Footer() {
   return (
@@ -102,19 +157,7 @@ export function Footer() {
             <p className="font-meta text-foreground/60 text-[12px] tracking-[0.3px] uppercase leading-[16px]">
               UPDATES
             </p>
-            <div className="flex flex-col gap-[12px] w-full max-w-[320px] md:max-w-none">
-              <input
-                type="email"
-                placeholder="EMAIL ADDRESS"
-                className="font-meta h-[46px] px-[16px] py-[12px] bg-[rgba(245,245,245,0.05)] border border-[rgba(245,245,245,0.2)] text-foreground placeholder:text-[rgba(245,245,245,0.5)] text-[12px] focus:outline-none"
-              />
-              <button
-                type="submit"
-                className="font-meta h-[40px] px-[16px] py-[12px] bg-foreground text-[#0a0a0a] text-[12px] font-bold tracking-[0.3px] text-center hover:bg-foreground/90 transition-colors"
-              >
-                SUBSCRIBE
-              </button>
-            </div>
+            <FooterSubscribe />
           </div>
         </div>
 
