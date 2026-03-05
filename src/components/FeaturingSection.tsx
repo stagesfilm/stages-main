@@ -43,9 +43,9 @@ export function FeaturingSection({ characters }: Props) {
   return (
     <section className="bg-[#f5f5f5] py-16 md:py-[80px] overflow-hidden">
       <div className="px-6 md:px-[80px] mb-[32px] md:mb-[48px]">
-        <p className="font-meta text-[#0a0a0a]/55 text-[12px] tracking-[0.3px] uppercase">
-          Featuring
-        </p>
+        <h2 className="font-display text-[#0a0a0a] text-[40px] md:text-[72px] leading-[1] tracking-[-3.6px] uppercase">
+          FEATURING
+        </h2>
       </div>
 
       <div className="px-6 md:px-[40px]">

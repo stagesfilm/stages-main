@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { CopyButton } from "@/components/CopyButton";
+import { CopyIconButton } from "@/components/CopyIconButton";
 
 export const metadata: Metadata = {
   title: "Share STAGES",
@@ -18,36 +19,16 @@ export const metadata: Metadata = {
   },
 };
 
-const assets = [
-  {
-    id: "1",
-    title: "Production Still – Motel Room",
-    description: "Behind the scenes conversation",
-    image: "/home-hero.png",
-    downloadUrl: "#",
-  },
-  {
-    id: "2",
-    title: "Performance Still – Stage",
-    description: "David performing live",
-    image: "/david-on-stage.png",
-    downloadUrl: "#",
-  },
-  {
-    id: "3",
-    title: "Performance Still – Venue",
-    description: "Intimate venue performance",
-    image: "/david-singing.png",
-    downloadUrl: "#",
-  },
-  {
-    id: "4",
-    title: "On the Road",
-    description: "Life on tour",
-    image: "/david-with-gear.png",
-    downloadUrl: "#",
-  },
+const pressAds = [
+  "/press-ads/01-StagesPoster.png",
+  "/press-ads/STAGES_IG_001b.png",
+  "/press-ads/STAGES_IG_002.png",
+  "/press-ads/STAGES_IG_003.png",
+  "/press-ads/STAGES_IG_004.png",
+  "/press-ads/STAGES_IG_005.png",
 ];
+
+const pressStills = Array.from({ length: 45 }, (_, i) => `/screen-previews/STAGES-${i + 1}.jpg`);
 
 export default function SharePage() {
   return (
@@ -72,40 +53,79 @@ export default function SharePage() {
         </div>
       </section>
 
-      {/* Asset Grid */}
+      {/* Press Ads */}
       <section className="py-16 border-t border-border">
         <div className="w-full px-6 md:px-[80px]">
-          <div className="grid md:grid-cols-2 gap-6">
-            {assets.map((asset) => (
+          <h2 className="font-meta text-[10px] tracking-[0.5px] text-muted uppercase mb-10">
+            Press &amp; Promotional
+          </h2>
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+            {pressAds.map((src, i) => (
               <div
-                key={asset.id}
-                id={asset.id}
+                key={src}
                 className="group bg-card border border-border overflow-hidden hover:border-foreground/30 transition-colors"
               >
-                <div className="relative aspect-[4/3] bg-background">
+                <div className="relative aspect-[4/5] bg-background">
                   <Image
-                    src={asset.image}
-                    alt={asset.title}
+                    src={src}
+                    alt="STAGES promotional material"
                     fill
                     className="object-cover transition-transform duration-500 group-hover:scale-[1.02]"
-                    sizes="(max-width: 768px) 100vw, 50vw"
+                    sizes="(max-width: 768px) 50vw, 33vw"
                   />
                 </div>
-                <div className="p-6">
-                  <h3 className="font-semibold text-foreground mb-1">{asset.title}</h3>
-                  <p className="text-sm text-muted mb-5">{asset.description}</p>
-                  <div className="flex flex-col sm:flex-row gap-3">
-                    <a
-                      href={asset.downloadUrl}
-                      className="font-meta inline-flex items-center justify-center gap-2 h-[52px] px-8 bg-foreground text-background text-sm font-bold tracking-[0.35px] hover:bg-foreground/90 transition-colors"
-                    >
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                      </svg>
-                      DOWNLOAD
-                    </a>
-                    <CopyButton url={`https://stagesfilm.com/share#${asset.id}`} label="Copy asset link" />
-                  </div>
+                <div className="p-3 flex gap-2">
+                  <a
+                    href={src}
+                    download
+                    className="font-meta inline-flex items-center justify-center gap-2 h-[36px] flex-1 bg-foreground text-background text-[11px] font-bold tracking-[0.35px] hover:bg-foreground/90 transition-colors"
+                  >
+                    <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                    </svg>
+                    DOWNLOAD
+                  </a>
+                  <CopyIconButton url={`https://stagesfilm.com/share#ad-${i + 1}`} />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Press Stills */}
+      <section className="py-16 border-t border-border">
+        <div className="w-full px-6 md:px-[80px]">
+          <h2 className="font-meta text-[10px] tracking-[0.5px] text-muted uppercase mb-10">
+            Production Stills
+          </h2>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            {pressStills.map((src, i) => (
+              <div
+                key={src}
+                className="group bg-card border border-border overflow-hidden hover:border-foreground/30 transition-colors"
+              >
+                <div className="relative aspect-[3/2] bg-background">
+                  <Image
+                    src={src}
+                    alt="STAGES production still"
+                    fill
+                    className="object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+                    sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                  />
+                </div>
+                <div className="p-3 flex gap-2">
+                  <a
+                    href={src}
+                    download
+                    className="font-meta inline-flex items-center justify-center gap-2 h-[36px] flex-1 bg-foreground text-background text-[11px] font-bold tracking-[0.35px] hover:bg-foreground/90 transition-colors"
+                  >
+                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                    </svg>
+                    DOWNLOAD
+                  </a>
+                  <CopyIconButton url={`https://stagesfilm.com/share#still-${i + 1}`} />
                 </div>
               </div>
             ))}
@@ -134,31 +154,36 @@ export default function SharePage() {
                 For commercial use or custom assets, please contact our publicity team.
               </p>
               <a
-                href="mailto:ChrisDeHaan@LiveNationStudios.com"
+                href="mailto:ChrisDelhomme@LiveNationStudios.com"
                 className="text-accent hover:text-accent-hover transition-colors text-sm"
               >
-                ChrisDeHaan@LiveNationStudios.com
+                ChrisDelhomme@LiveNationStudios.com
               </a>
             </div>
           </div>
         </div>
       </section>
 
-      {/* CTA */}
+      {/* Copy Link + CTA */}
       <section className="py-24 bg-accent">
-        <div className="w-full px-6 md:px-[80px]">
-          <h2
-            className="font-display text-[#0a0a0a] leading-none tracking-[-1px] mb-8"
-            style={{ fontSize: "clamp(2rem, 5vw, 3rem)" }}
-          >
-            SEE STAGES AT SXSW 2026
-          </h2>
-          <Link
-            href="/#screenings"
-            className="font-meta inline-flex items-center justify-center h-[52px] px-8 border border-[#0a0a0a] text-[#0a0a0a] font-bold text-sm tracking-[0.35px] hover:bg-[#0a0a0a] hover:text-foreground transition-colors"
-          >
-            VIEW SCREENINGS
-          </Link>
+        <div className="w-full px-6 md:px-[80px] flex flex-col md:flex-row md:items-end justify-between gap-8">
+          <div>
+            <h2
+              className="font-display text-[#0a0a0a] leading-none tracking-[-1px] mb-8"
+              style={{ fontSize: "clamp(2rem, 5vw, 3rem)" }}
+            >
+              SEE STAGES AT SXSW 2026
+            </h2>
+            <div className="flex flex-col sm:flex-row gap-3">
+              <Link
+                href="/#screenings"
+                className="font-meta inline-flex items-center justify-center h-[52px] px-8 border border-[#0a0a0a] text-[#0a0a0a] font-bold text-sm tracking-[0.35px] hover:bg-[#0a0a0a] hover:text-foreground transition-colors"
+              >
+                VIEW SCREENINGS
+              </Link>
+              <CopyButton url="https://stagesfilm.com" />
+            </div>
+          </div>
         </div>
       </section>
     </>
