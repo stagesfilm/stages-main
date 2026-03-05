@@ -1,11 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 
-export async function POST(req: NextRequest) {
-  const scriptUrl = process.env.GOOGLE_SCRIPT_URL;
-  if (!scriptUrl) {
-    return NextResponse.json({ error: "Not configured" }, { status: 500 });
-  }
+const FORM_URL =
+  "https://docs.google.com/forms/d/e/1FAIpQLSdeIMWjmED6kjqlgWCX_4unBxMotKmY0R-40jEoIXgbLjDkWg/formResponse";
+const ENTRY_ID = "entry.1435793376";
 
+export async function POST(req: NextRequest) {
   let email: string;
   try {
     const body = await req.json();
@@ -19,13 +18,13 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const res = await fetch(scriptUrl, {
+    const res = await fetch(FORM_URL, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email }),
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: `${ENTRY_ID}=${encodeURIComponent(email)}`,
     });
 
-    if (!res.ok) throw new Error(`Script responded ${res.status}`);
+    if (!res.ok) throw new Error(`Form responded ${res.status}`);
     return NextResponse.json({ success: true });
   } catch (err) {
     console.error("Subscribe error:", err);

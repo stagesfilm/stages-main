@@ -135,8 +135,8 @@ export function HeroVideo() {
             ref={containerRef}
             className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 [&>div]:!w-full [&>div]:!h-full [&_iframe]:w-full [&_iframe]:h-full"
             style={{
-              width: "calc(max(100%, 177.78vh))",
-              height: "calc(max(100%, 56.25vw))",
+              width: "max(100vw, 177.78vh, 177.78%)",
+              height: "max(100vh, 56.25vw, 56.25%)",
             }}
           />
         </div>
