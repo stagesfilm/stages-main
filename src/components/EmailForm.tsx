@@ -2,6 +2,10 @@
 
 import { useState } from "react";
 
+const FORM_URL =
+  "https://docs.google.com/forms/d/e/1FAIpQLSdeIMWjmED6kjqlgWCX_4unBxMotKmY0R-40jEoIXgbLjDkWg/formResponse";
+const ENTRY_ID = "entry.93113307";
+
 type Status = "idle" | "loading" | "success" | "error";
 
 export function EmailForm() {
@@ -11,16 +15,17 @@ export function EmailForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (status === "loading" || status === "success") return;
+    const trimmed = email.trim().toLowerCase();
+    if (!trimmed) return;
     setStatus("loading");
 
     try {
-      const res = await fetch("/api/subscribe", {
+      await fetch(FORM_URL, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
+        mode: "no-cors",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: new URLSearchParams({ [ENTRY_ID]: trimmed }).toString(),
       });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error ?? "Failed");
       setStatus("success");
       setEmail("");
     } catch {
