@@ -30,7 +30,7 @@ export function Footer() {
             alt={logo.alt}
             width={logo.width}
             height={logo.height}
-            className="h-[28px] md:h-[36px] w-auto opacity-60"
+            className="h-[28px] md:h-[36px] w-auto"
           />
         ))}
       </div>
