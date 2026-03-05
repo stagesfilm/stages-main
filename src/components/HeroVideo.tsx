@@ -4,7 +4,8 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { HeroCarousel } from "./HeroCarousel";
 
 const YOUTUBE_ID = "RaeZ8LUgFxA";
-const SEEK_THRESHOLD = 0.5; // seconds before end to seek back (avoids YT loop UI flash)
+// YouTube end-screen appears ~3s before the video ends; seek back before that
+const SEEK_THRESHOLD = 3.5;
 
 declare global {
   interface Window {
@@ -40,6 +41,13 @@ export function HeroVideo() {
   const pollRef = useRef<ReturnType<typeof setInterval>>(null);
   const failTimerRef = useRef<ReturnType<typeof setTimeout>>(null);
 
+  const seekToStart = useCallback(() => {
+    const p = playerRef.current;
+    if (!p) return;
+    p.seekTo(0, true);
+    p.playVideo();
+  }, []);
+
   const startSeamlessLoop = useCallback(() => {
     if (pollRef.current) clearInterval(pollRef.current);
     pollRef.current = setInterval(() => {
@@ -48,10 +56,10 @@ export function HeroVideo() {
       const current = p.getCurrentTime();
       const duration = p.getDuration();
       if (duration > 0 && current >= duration - SEEK_THRESHOLD) {
-        p.seekTo(0, true);
+        seekToStart();
       }
-    }, 250);
-  }, []);
+    }, 200);
+  }, [seekToStart]);
 
   useEffect(() => {
     let cancelled = false;
@@ -91,6 +99,10 @@ export function HeroVideo() {
               if (failTimerRef.current) clearTimeout(failTimerRef.current);
               setIsPlaying(true);
               startSeamlessLoop();
+            }
+            // Hard fallback: if YT end screen somehow appears, restart immediately
+            if (e.data === window.YT.PlayerState.ENDED) {
+              seekToStart();
             }
           },
           onError: () => {
