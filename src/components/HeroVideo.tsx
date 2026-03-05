@@ -4,8 +4,8 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { HeroCarousel } from "./HeroCarousel";
 
 const YOUTUBE_ID = "RaeZ8LUgFxA";
-// YouTube end-screen appears ~3s before the video ends; seek back before that
 const SEEK_THRESHOLD = 3.5;
+const VIDEO_ASPECT = 16 / 9;
 
 declare global {
   interface Window {
@@ -16,15 +16,9 @@ declare global {
 
 function loadYTApi(): Promise<void> {
   return new Promise((resolve) => {
-    if (window.YT?.Player) {
-      resolve();
-      return;
-    }
+    if (window.YT?.Player) { resolve(); return; }
     const prev = window.onYouTubeIframeAPIReady;
-    window.onYouTubeIframeAPIReady = () => {
-      prev?.();
-      resolve();
-    };
+    window.onYouTubeIframeAPIReady = () => { prev?.(); resolve(); };
     if (!document.querySelector('script[src*="youtube.com/iframe_api"]')) {
       const tag = document.createElement("script");
       tag.src = "https://www.youtube.com/iframe_api";
@@ -36,10 +30,33 @@ function loadYTApi(): Promise<void> {
 export function HeroVideo() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [hasFailed, setHasFailed] = useState(false);
+  const [coverSize, setCoverSize] = useState({ width: "300vw", height: "300vh" });
+
+  const wrapperRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const playerRef = useRef<YT.Player | null>(null);
   const pollRef = useRef<ReturnType<typeof setInterval>>(null);
   const failTimerRef = useRef<ReturnType<typeof setTimeout>>(null);
+
+  const updateCoverSize = useCallback(() => {
+    const el = wrapperRef.current;
+    if (!el) return;
+    const { width, height } = el.getBoundingClientRect();
+    if (!width || !height) return;
+    const containerAspect = width / height;
+    if (containerAspect > VIDEO_ASPECT) {
+      setCoverSize({ width: `${width}px`, height: `${width / VIDEO_ASPECT}px` });
+    } else {
+      setCoverSize({ width: `${height * VIDEO_ASPECT}px`, height: `${height}px` });
+    }
+  }, []);
+
+  useEffect(() => {
+    updateCoverSize();
+    const ro = new ResizeObserver(updateCoverSize);
+    if (wrapperRef.current) ro.observe(wrapperRef.current);
+    return () => ro.disconnect();
+  }, [updateCoverSize]);
 
   const seekToStart = useCallback(() => {
     const p = playerRef.current;
@@ -55,39 +72,26 @@ export function HeroVideo() {
       if (!p?.getCurrentTime || !p?.getDuration) return;
       const current = p.getCurrentTime();
       const duration = p.getDuration();
-      if (duration > 0 && current >= duration - SEEK_THRESHOLD) {
-        seekToStart();
-      }
+      if (duration > 0 && current >= duration - SEEK_THRESHOLD) seekToStart();
     }, 200);
   }, [seekToStart]);
 
   useEffect(() => {
     let cancelled = false;
-
     failTimerRef.current = setTimeout(() => {
       if (!isPlaying) setHasFailed(true);
     }, 12000);
 
     loadYTApi().then(() => {
       if (cancelled || !containerRef.current) return;
-
       const el = document.createElement("div");
       containerRef.current.appendChild(el);
-
       playerRef.current = new window.YT.Player(el, {
         videoId: YOUTUBE_ID,
         playerVars: {
-          autoplay: 1,
-          mute: 1,
-          controls: 0,
-          showinfo: 0,
-          modestbranding: 1,
-          rel: 0,
-          playsinline: 1,
-          disablekb: 1,
-          fs: 0,
-          iv_load_policy: 3,
-          cc_load_policy: 0,
+          autoplay: 1, mute: 1, controls: 0, showinfo: 0,
+          modestbranding: 1, rel: 0, playsinline: 1,
+          disablekb: 1, fs: 0, iv_load_policy: 3, cc_load_policy: 0,
         },
         events: {
           onReady: (e: YT.PlayerEvent) => {
@@ -100,14 +104,9 @@ export function HeroVideo() {
               setIsPlaying(true);
               startSeamlessLoop();
             }
-            // Hard fallback: if YT end screen somehow appears, restart immediately
-            if (e.data === window.YT.PlayerState.ENDED) {
-              seekToStart();
-            }
+            if (e.data === window.YT.PlayerState.ENDED) seekToStart();
           },
-          onError: () => {
-            setHasFailed(true);
-          },
+          onError: () => setHasFailed(true),
         },
       });
     });
@@ -121,28 +120,23 @@ export function HeroVideo() {
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
-    <div className="absolute inset-0 overflow-hidden bg-black">
-      {/* Fallback stills — visible until video plays (or if it fails) */}
+    <div ref={wrapperRef} className="absolute inset-0 overflow-hidden bg-black">
       {(!isPlaying || hasFailed) && <HeroCarousel />}
 
-      {/* YouTube player — oversized to crop out any YT UI */}
       {!hasFailed && (
         <div
           className="absolute inset-0 pointer-events-none"
           style={{ opacity: isPlaying ? 1 : 0, transition: "opacity 1s ease-in-out" }}
         >
+          {/* Sized to exactly cover the container at 16:9, centered */}
           <div
             ref={containerRef}
             className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 [&>div]:!w-full [&>div]:!h-full [&_iframe]:w-full [&_iframe]:h-full"
-            style={{
-              width: "max(100vw, 177.78vh, 177.78%)",
-              height: "max(100vh, 56.25vw, 56.25%)",
-            }}
+            style={coverSize}
           />
         </div>
       )}
 
-      {/* Dark overlay for text legibility */}
       <div className="absolute inset-0 bg-black/40 pointer-events-none" />
     </div>
   );
