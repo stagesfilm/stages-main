@@ -27,10 +27,21 @@ function loadYTApi(): Promise<void> {
   });
 }
 
+/**
+ * Compute pixel width & height for a 16:9 video to fully cover a container,
+ * behaving like CSS `object-fit: cover`.
+ */
+function computeCover(cw: number, ch: number) {
+  const containerAspect = cw / ch;
+  if (containerAspect > VIDEO_ASPECT) {
+    return { w: Math.ceil(cw), h: Math.ceil(cw / VIDEO_ASPECT) };
+  }
+  return { w: Math.ceil(ch * VIDEO_ASPECT), h: Math.ceil(ch) };
+}
+
 export function HeroVideo() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [hasFailed, setHasFailed] = useState(false);
-  const [coverSize, setCoverSize] = useState({ width: "300vw", height: "300vh" });
 
   const wrapperRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -38,25 +49,27 @@ export function HeroVideo() {
   const pollRef = useRef<ReturnType<typeof setInterval>>(null);
   const failTimerRef = useRef<ReturnType<typeof setTimeout>>(null);
 
-  const updateCoverSize = useCallback(() => {
-    const el = wrapperRef.current;
-    if (!el) return;
-    const { width, height } = el.getBoundingClientRect();
-    if (!width || !height) return;
-    const containerAspect = width / height;
-    if (containerAspect > VIDEO_ASPECT) {
-      setCoverSize({ width: `${width}px`, height: `${width / VIDEO_ASPECT}px` });
-    } else {
-      setCoverSize({ width: `${height * VIDEO_ASPECT}px`, height: `${height}px` });
-    }
+  const applyCoverSize = useCallback(() => {
+    const wrapper = wrapperRef.current;
+    const container = containerRef.current;
+    if (!wrapper || !container) return;
+
+    const { width: cw, height: ch } = wrapper.getBoundingClientRect();
+    if (!cw || !ch) return;
+
+    const { w, h } = computeCover(cw, ch);
+    container.style.width = `${w}px`;
+    container.style.height = `${h}px`;
+
+    try { playerRef.current?.setSize(w, h); } catch { /* player may not be ready */ }
   }, []);
 
   useEffect(() => {
-    updateCoverSize();
-    const ro = new ResizeObserver(updateCoverSize);
+    applyCoverSize();
+    const ro = new ResizeObserver(applyCoverSize);
     if (wrapperRef.current) ro.observe(wrapperRef.current);
     return () => ro.disconnect();
-  }, [updateCoverSize]);
+  }, [applyCoverSize]);
 
   const seekToStart = useCallback(() => {
     const p = playerRef.current;
@@ -84,12 +97,25 @@ export function HeroVideo() {
 
     loadYTApi().then(() => {
       if (cancelled || !containerRef.current) return;
+
+      const wrapper = wrapperRef.current;
+      let initW = 3840;
+      let initH = 2160;
+      if (wrapper) {
+        const rect = wrapper.getBoundingClientRect();
+        if (rect.width && rect.height) {
+          const cover = computeCover(rect.width, rect.height);
+          initW = cover.w;
+          initH = cover.h;
+        }
+      }
+
       const el = document.createElement("div");
       containerRef.current.appendChild(el);
       playerRef.current = new window.YT.Player(el, {
         videoId: YOUTUBE_ID,
-        width: "100%",
-        height: "100%",
+        width: initW,
+        height: initH,
         playerVars: {
           autoplay: 1, mute: 1, controls: 0, showinfo: 0,
           modestbranding: 1, rel: 0, playsinline: 1,
@@ -99,12 +125,14 @@ export function HeroVideo() {
           onReady: (e: YT.PlayerEvent) => {
             e.target.setPlaybackQuality("hd1080");
             e.target.playVideo();
+            applyCoverSize();
           },
           onStateChange: (e: YT.OnStateChangeEvent) => {
             if (e.data === window.YT.PlayerState.PLAYING) {
               if (failTimerRef.current) clearTimeout(failTimerRef.current);
               setIsPlaying(true);
               startSeamlessLoop();
+              applyCoverSize();
             }
             if (e.data === window.YT.PlayerState.ENDED) seekToStart();
           },
@@ -133,7 +161,6 @@ export function HeroVideo() {
           <div
             ref={containerRef}
             className="hero-yt-wrapper absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
-            style={coverSize}
           />
         </div>
       )}

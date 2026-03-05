@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 const FORM_URL =
   "https://docs.google.com/forms/d/e/1FAIpQLSdeIMWjmED6kjqlgWCX_4unBxMotKmY0R-40jEoIXgbLjDkWg/formResponse";
-const ENTRY_ID = "entry.1435793376";
+const ENTRY_ID = "entry.93113307";
 
 export async function POST(req: NextRequest) {
   let email: string;
