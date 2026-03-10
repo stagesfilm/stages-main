@@ -11,7 +11,10 @@ const pressAds = [
   "/press-ads/STAGES_IG_005.png",
 ];
 
-const pressStills = Array.from({ length: 45 }, (_, i) => `/screen-previews/STAGES-${i + 1}.jpg`);
+// Only stills without —X in filename (excluded from share)
+const pressStills = [6, 7, 8, 9, 10, 11, 14, 15, 17, 19, 28, 37].map(
+  (n) => `/screen-previews/STAGES-${n}.jpg`
+);
 
 export default function SharePage() {
   return (
