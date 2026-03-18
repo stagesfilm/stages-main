@@ -16,7 +16,7 @@ const contacts = [
   },
   {
     title: "Publicity Contact",
-    org: null,
+    org: "Live Nation Studios",
     name: "Chris Delhomme",
     email: "ChrisDelhomme@LiveNationStudios.com",
   },
