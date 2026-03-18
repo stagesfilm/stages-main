@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { CopyIconButton } from "@/components/CopyIconButton";
+import { hasUpcomingScreenings } from "@/lib/screenings";
 
 const pressAds = [
   "/press-ads/01-StagesPoster.png",
@@ -17,6 +18,8 @@ const pressStills = [6, 7, 8, 9, 10, 11, 14, 15, 17, 19, 28, 37].map(
 );
 
 export default function SharePage() {
+  const showScreeningsCta = hasUpcomingScreenings();
+
   return (
     <>
       {/* Intro */}
@@ -147,25 +150,26 @@ export default function SharePage() {
         </div>
       </section>
 
-      {/* Copy Link + CTA */}
-      <section className="py-24 bg-accent">
-        <div className="w-full px-6 md:px-[80px] flex flex-col md:flex-row md:items-end justify-between gap-8">
-          <div>
-            <h2
-              className="font-display text-[#0a0a0a] leading-none tracking-[-1px] mb-8"
-              style={{ fontSize: "clamp(2rem, 5vw, 3rem)" }}
-            >
-              SEE STAGES AT SXSW 2026
-            </h2>
-            <Link
-              href="/#screenings"
-              className="font-meta inline-flex items-center justify-center h-[52px] px-8 border border-[#0a0a0a] text-[#0a0a0a] font-bold text-sm tracking-[0.35px] hover:bg-[#0a0a0a] hover:text-foreground transition-colors w-fit"
-            >
-              VIEW SCREENINGS
-            </Link>
+      {showScreeningsCta && (
+        <section className="py-24 bg-accent">
+          <div className="w-full px-6 md:px-[80px] flex flex-col md:flex-row md:items-end justify-between gap-8">
+            <div>
+              <h2
+                className="font-display text-[#0a0a0a] leading-none tracking-[-1px] mb-8"
+                style={{ fontSize: "clamp(2rem, 5vw, 3rem)" }}
+              >
+                SEE STAGES AT SXSW 2026
+              </h2>
+              <Link
+                href="/#screenings"
+                className="font-meta inline-flex items-center justify-center h-[52px] px-8 border border-[#0a0a0a] text-[#0a0a0a] font-bold text-sm tracking-[0.35px] hover:bg-[#0a0a0a] hover:text-foreground transition-colors w-fit"
+              >
+                VIEW SCREENINGS
+              </Link>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
     </>
   );
 }

@@ -6,6 +6,7 @@ import { CopyButton } from "@/components/CopyButton";
 import { EmailForm } from "@/components/EmailForm";
 import { HeroVideo } from "@/components/HeroVideo";
 import { ScreeningsSection } from "@/components/ScreeningsSection";
+import { hasUpcomingScreenings } from "@/lib/screenings";
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -170,6 +171,8 @@ const characters: CharacterCard[] = [
 ];
 
 export default function Home() {
+  const showScreeningsCta = hasUpcomingScreenings();
+
   return (
     <>
       <script
@@ -204,8 +207,8 @@ export default function Home() {
                 className="w-full max-w-[593px] h-auto"
               />
               <div className="w-fit mt-[40px] md:mt-[69px]">
-                <Button href="#screenings">
-                  VIEW SCREENINGS
+                <Button href={showScreeningsCta ? "#screenings" : "/press"}>
+                  {showScreeningsCta ? "VIEW SCREENINGS" : "VIEW PRESS"}
                 </Button>
               </div>
             </div>
