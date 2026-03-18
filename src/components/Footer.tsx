@@ -167,10 +167,12 @@ export function Footer() {
             © {new Date().getFullYear()} STAGES Film. ALL RIGHTS RESERVED.
           </p>
           <div className="flex flex-wrap justify-center md:justify-end gap-x-[20px] gap-y-[8px]">
-            <a href="#" className="font-meta text-foreground/60 text-[11px] md:text-[12px] tracking-[0.3px] hover:text-foreground transition-colors">
-              TWITTER
-            </a>
-            <a href="#" className="font-meta text-foreground/60 text-[11px] md:text-[12px] tracking-[0.3px] hover:text-foreground transition-colors">
+            <a
+              href="https://www.instagram.com/stages.movie"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-meta text-foreground/60 text-[11px] md:text-[12px] tracking-[0.3px] hover:text-foreground transition-colors"
+            >
               INSTAGRAM
             </a>
             <a href="https://allmannerofus.com" target="_blank" rel="noopener noreferrer" className="font-meta text-foreground/60 text-[11px] md:text-[12px] tracking-[0.3px] hover:text-foreground transition-colors">
