@@ -168,7 +168,7 @@ export function Footer() {
           </p>
           <div className="flex flex-wrap justify-center md:justify-end gap-x-[20px] gap-y-[8px]">
             <a
-              href="https://www.instagram.com/stages.movie"
+              href="https://www.instagram.com/stagesfilm"
               target="_blank"
               rel="noopener noreferrer"
               className="font-meta text-foreground/60 text-[11px] md:text-[12px] tracking-[0.3px] hover:text-foreground transition-colors"
