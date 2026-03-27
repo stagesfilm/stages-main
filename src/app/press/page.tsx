@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/Button";
 
@@ -48,6 +49,17 @@ const filmFacts = [
   { label: "Language", value: "English" },
   { label: "Country", value: "USA" },
   { label: "Format", value: "Digital" },
+];
+
+const reviews = [
+  {
+    laurel: "/Best of Texas Award_White.png",
+    laurelAlt: "SXSW Best of Texas Award",
+    award: "SXSW Best of Texas Award",
+    winner: "Winner: Stages directed by Ryan Booth",
+    quote:
+      "Ryan Booth's Stages is both a heartfelt tribute to what it takes to endure in an often unforgiving industry, and a moving portrait of life as an artist in and around Texas. It's filled with complex emotion, moving music, and a deep admiration for the Lone Star State.",
+  },
 ];
 
 const credits = [
@@ -177,6 +189,38 @@ export default function PressPage() {
                 <span className="font-medium text-sm text-foreground flex-1">
                   {credit.name}
                 </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Reviews */}
+      <section className="py-16 border-t border-border">
+        <div className="w-full px-6 md:px-[80px]">
+          <h2 className="font-meta text-[10px] tracking-[0.5px] text-muted uppercase mb-10">
+            Reviews &amp; Awards
+          </h2>
+          <div className="space-y-10">
+            {reviews.map((review) => (
+              <div key={review.award} className="flex flex-col sm:flex-row gap-8 items-start">
+                <div className="relative w-[140px] h-[76px] shrink-0">
+                  <Image
+                    src={review.laurel}
+                    alt={review.laurelAlt}
+                    fill
+                    className="object-contain object-left"
+                  />
+                </div>
+                <div className="flex flex-col gap-2">
+                  <p className="font-meta text-[10px] tracking-[0.5px] text-muted uppercase">
+                    {review.award}
+                  </p>
+                  <p className="text-sm font-semibold text-foreground">{review.winner}</p>
+                  <blockquote className="text-foreground/75 text-sm leading-relaxed italic border-l-2 border-accent pl-4 mt-1">
+                    &ldquo;{review.quote}&rdquo;
+                  </blockquote>
+                </div>
               </div>
             ))}
           </div>
