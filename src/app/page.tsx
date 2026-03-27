@@ -187,14 +187,24 @@ export default function Home() {
 
         {/* Hero content — left-aligned with nav logo at 80px gutter */}
         <div className="relative pt-[200px] md:pt-[240px] px-6 md:px-[80px] pb-[96px]">
-          {/* SXSW badge — sits above the two-column grid */}
-          <div className="w-[160px] md:w-[202px] h-[87px] md:h-[110px] relative mb-[20px] animate-fade-up animate-delay-100">
-            <Image
-              src="/sxsw-premiere.png"
-              alt="SXSW Film Festival 2026 World Premiere"
-              fill
-              className="object-contain object-left"
-            />
+          {/* Award laurels — sits above the two-column grid */}
+          <div className="flex items-center gap-4 mb-[20px] animate-fade-up animate-delay-100">
+            <div className="w-[160px] md:w-[202px] h-[87px] md:h-[110px] relative flex-shrink-0">
+              <Image
+                src="/Best of Texas Award_White.png"
+                alt="Best of Texas Award"
+                fill
+                className="object-contain object-left"
+              />
+            </div>
+            <div className="w-[160px] md:w-[202px] h-[87px] md:h-[110px] relative flex-shrink-0">
+              <Image
+                src="/DIFF-Laurel.png"
+                alt="Dallas International Film Festival Laurel"
+                fill
+                className="object-contain object-left"
+              />
+            </div>
           </div>
 
           <div className="grid md:grid-cols-2 gap-10 md:gap-[80px]">
