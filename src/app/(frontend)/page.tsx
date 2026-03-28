@@ -5,8 +5,12 @@ import { ScrollReveal } from "@/components/ScrollReveal";
 import { CopyButton } from "@/components/CopyButton";
 import { EmailForm } from "@/components/EmailForm";
 import { HeroVideo } from "@/components/HeroVideo";
-import { ScreeningsSection } from "@/components/ScreeningsSection";
-import { hasUpcomingScreenings } from "@/lib/screenings";
+import { getPayloadClient } from "@/lib/payload";
+import type { Homepage, Cast, Media } from "@/payload-types";
+
+export const revalidate = 3600;
+
+// ─── JSON-LD (static — schema.org Movie) ─────────────────────────────────────
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -18,160 +22,85 @@ const jsonLd = {
   dateCreated: "2026",
   duration: "PT94M",
   inLanguage: "en",
-  countryOfOrigin: {
-    "@type": "Country",
-    name: "United States",
-  },
-  director: {
-    "@type": "Person",
-    name: "Ryan Booth",
-  },
-  productionCompany: {
-    "@type": "Organization",
-    name: "Live Nation Studios",
-  },
+  countryOfOrigin: { "@type": "Country", name: "United States" },
+  director: { "@type": "Person", name: "Ryan Booth" },
+  productionCompany: { "@type": "Organization", name: "Live Nation Studios" },
   actor: [
-    { "@type": "Person", name: "David Ramirez" },
-    { "@type": "Person", name: "Leslie Grace" },
-    { "@type": "Person", name: "Jolene" },
-    { "@type": "Person", name: "Jake McMullen" },
-    { "@type": "Person", name: "Abner Ramirez" },
-    { "@type": "Person", name: "Rafael Casal" },
-    { "@type": "Person", name: "Amanda Sudano Ramirez" },
-    { "@type": "Person", name: "Marc Menchaca" },
-    { "@type": "Person", name: "David Strathairn" },
-    { "@type": "Person", name: "Jerry Ferrara" },
-  ],
-  image: "https://stagesfilm.com/opengraph.png",
-  url: "https://stagesfilm.com",
-  sameAs: [
-    "https://schedule.sxsw.com/2026/films/2253651",
-  ],
-  event: {
-    "@type": "ScreeningEvent",
-    name: "STAGES — SXSW 2026 World Premiere",
-    startDate: "2026-03-12",
-    endDate: "2026-03-17",
-    location: {
-      "@type": "Place",
-      name: "SXSW Film Festival",
-      address: {
-        "@type": "PostalAddress",
-        addressLocality: "Austin",
-        addressRegion: "TX",
-        addressCountry: "US",
-      },
-    },
-    url: "https://schedule.sxsw.com/2026/films/2253651",
-  },
+    "David Ramirez", "Leslie Grace", "Jolene", "Jake McMullen",
+    "Abner Ramirez", "Rafael Casal", "Amanda Sudano Ramirez",
+    "Marc Menchaca", "David Strathairn", "Jerry Ferrara",
+  ].map((name) => ({ "@type": "Person", name })),
+  image: "https://stages.movie/opengraph.png",
+  url: "https://stages.movie",
 };
 
+// ─── Laurels container ────────────────────────────────────────────────────────
+// Max-width matches actor-stages SVG (593px). Each laurel shrinks as more are
+// added, wrapping to a second row rather than overflowing.
+// Formula: each laurel gets an equal share, capped at 202px (2-laurel baseline)
+// and floored at 80px (readable minimum). Gap accounts for the 16px gap.
 
-const characters: CharacterCard[] = [
-  {
-    characterName: "Ben Garza",
-    performedBy: "Performed by",
-    actorName: "David Ramirez",
-    actorUrl: "https://www.imdb.com/name/nm3273977/",
-    image1: "/david-singing.png",
-    image2: "/home-hero.png",
-    image1Alt: "David Ramirez as Ben Garza",
-    image2Alt: "Ben Garza on stage",
-  },
-  {
-    characterName: "Jessie Ramos",
-    performedBy: "Performed by",
-    actorName: "Leslie Grace",
-    actorUrl: "https://www.imdb.com/name/nm6051155/",
-    image1: "/cast/Leslie-Grace.jpg",
-    image2: "/david-singing.png",
-    image1Alt: "Leslie Grace as Jessie Ramos",
-    image2Alt: "Jessie Ramos performing",
-  },
-  {
-    characterName: "Rita",
-    performedBy: "Performed by",
-    actorName: "Jolene",
-    actorUrl: "https://www.imdb.com/name/nm0086883/",
-    image1: "/cast/Jolene.jpg",
-    image2: "/david-on-stage.png",
-    image1Alt: "Jolene as Rita",
-    image2Alt: "Rita backstage",
-  },
-  {
-    characterName: "Parker",
-    performedBy: "Performed by",
-    actorName: "Jake McMullen",
-    actorUrl: "https://www.louisprince.com/",
-    image1: "/cast/Jake-McMullen.jpg",
-    image2: "/david-with-gear.png",
-    image1Alt: "Jake McMullen as Parker",
-    image2Alt: "Parker at soundcheck",
-  },
-  {
-    characterName: "Noah Ramirez",
-    performedBy: "Performed by",
-    actorName: "Abner Ramirez",
-    actorUrl: "https://www.imdb.com/name/nm6914491/",
-    image1: "/cast/abner.jpg",
-    image2: "/david-with-gear.png",
-    image1Alt: "Abner Ramirez as Noah Ramirez",
-    image2Alt: "Noah on tour",
-  },
-  {
-    characterName: "Jason",
-    performedBy: "Performed by",
-    actorName: "Rafael Casal",
-    actorUrl: "https://www.imdb.com/name/nm2592137/",
-    image1: "/cast/Rafael-Casal.jpg",
-    image2: "/david-on-stage.png",
-    image1Alt: "Rafael Casal as Jason",
-    image2Alt: "Jason on tour",
-  },
-  {
-    characterName: "Lucy",
-    performedBy: "Performed by",
-    actorName: "Amanda Sudano Ramirez",
-    actorUrl: "https://www.imdb.com/name/nm15854802/",
-    image1: "/cast/amanda.jpg",
-    image2: "/david-with-gear.png",
-    image1Alt: "Amanda Sudano Ramirez as Lucy",
-    image2Alt: "Lucy on tour",
-  },
-  {
-    characterName: "Pat Byrd",
-    performedBy: "Performed by",
-    actorName: "Marc Menchaca",
-    actorUrl: "https://www.imdb.com/name/nm0578766/",
-    image1: "/cast/marc.jpg",
-    image2: "/david-singing.png",
-    image1Alt: "Marc Menchaca as Pat Byrd",
-    image2Alt: "Pat Byrd backstage",
-  },
-  {
-    characterName: "Porter Gates",
-    performedBy: "Performed by",
-    actorName: "David Strathairn",
-    actorUrl: "https://www.imdb.com/name/nm0000657/",
-    image1: "/cast/David-Strathairn.jpg",
-    image2: "/home-hero.png",
-    image1Alt: "David Strathairn as Porter Gates",
-    image2Alt: "Porter Gates",
-  },
-  {
-    characterName: "Kevin",
-    performedBy: "Performed by",
-    actorName: "Jerry Ferrara",
-    actorUrl: "https://www.imdb.com/name/nm1483196/",
-    image1: "/cast/Jerry-Ferrara.jpg",
-    image2: "/home-hero.png",
-    image1Alt: "Jerry Ferrara as Kevin",
-    image2Alt: "Kevin backstage",
-  },
-];
+const LAUREL_MAX_CONTAINER = 593; // matches max-w-[593px] of actor-stages SVG
+const LAUREL_HEIGHT_DESKTOP = 110;
+const LAUREL_HEIGHT_MOBILE = 87;
+const LAUREL_GAP = 16;
+const LAUREL_MAX_W = 202;
+const LAUREL_MIN_W = 80;
 
-export default function Home() {
-  const showScreeningsCta = hasUpcomingScreenings();
+function laurelWidth(count: number): number {
+  if (count <= 0) return LAUREL_MAX_W;
+  const share = (LAUREL_MAX_CONTAINER - (count - 1) * LAUREL_GAP) / count;
+  return Math.max(LAUREL_MIN_W, Math.min(LAUREL_MAX_W, Math.floor(share)));
+}
+
+// ─── Page ─────────────────────────────────────────────────────────────────────
+
+export default async function Home() {
+  const payload = await getPayloadClient();
+
+  const [homepage, castResult] = await Promise.all([
+    payload.findGlobal({ slug: "homepage", depth: 1 }) as Promise<Homepage>,
+    payload.find({
+      collection: "cast",
+      sort: "order",
+      limit: 20,
+      depth: 1,
+    }),
+  ]);
+
+  const castItems = castResult.docs as Cast[];
+
+  // Map CMS cast data to CharacterCard shape
+  const characters: CharacterCard[] = castItems.map((c) => ({
+    characterName: c.characterName,
+    performedBy: c.performedBy,
+    actorName: c.actorName,
+    actorUrl: c.actorUrl ?? undefined,
+    // If images are populated as Media objects, use their URL; else keep the stored string
+    image1: typeof c.primaryImage === "object" ? `/media/${(c.primaryImage as Media).filename}` : String(c.primaryImage),
+    image2: typeof c.hoverImage === "object" ? `/media/${(c.hoverImage as Media).filename}` : String(c.hoverImage),
+    image1Alt: `${c.actorName} as ${c.characterName}`,
+    image2Alt: `${c.characterName}`,
+    quote: c.quote ?? undefined,
+  }));
+
+  // Laurels from CMS — fall back to empty if not yet configured
+  const laurels = (homepage.laurels ?? []) as Array<{
+    id?: string | null;
+    image: number | Media;
+    link?: string | null;
+  }>;
+  const laurelW = laurelWidth(laurels.length);
+
+  // If no CMS cast yet, fall back to hardcoded characters for visual continuity
+  const hasNoCastInCMS = castItems.length === 0;
+
+  const logline = homepage.logline ??
+    "After the tumultuous breakup of his band, Ben Garza embarks on his first-ever solo tour. Life on the road feels different now, and Ben must find his footing alongside Rita, his steadfast tour manager, and Jessie Ramos, his charismatic, spotlight-stealing opening act.";
+
+  const directedBy = homepage.directedBy ?? "RYAN BOOTH";
+  const year = homepage.year ?? "2026";
+  const runtime = homepage.runtime ?? "94 MIN";
 
   return (
     <>
@@ -182,30 +111,83 @@ export default function Home() {
 
       {/* ═══ HERO ═══════════════════════════════════════════════ */}
       <section className="relative flex flex-col">
-        {/* Background video with fallback to image carousel */}
         <HeroVideo />
 
-        {/* Hero content — left-aligned with nav logo at 80px gutter */}
         <div className="relative pt-[200px] md:pt-[240px] px-6 md:px-[80px] pb-[96px]">
-          {/* Award laurels — sits above the two-column grid */}
-          <div className="flex items-center gap-4 mb-[20px] animate-fade-up animate-delay-100">
-            <div className="w-[160px] md:w-[202px] h-[87px] md:h-[110px] relative flex-shrink-0">
-              <Image
-                src="/Best of Texas Award_White.png"
-                alt="Best of Texas Award"
-                fill
-                className="object-contain object-left"
-              />
+
+          {/* Award laurels — dynamic, constrained to SVG width, wrapping */}
+          {laurels.length > 0 ? (
+            <div
+              className="flex flex-wrap gap-4 mb-[20px] animate-fade-up animate-delay-100"
+              style={{ maxWidth: `${LAUREL_MAX_CONTAINER}px` }}
+            >
+              {laurels.map((laurel, i) => {
+                const img = laurel.image as Media;
+                const src = img?.filename ? `/media/${img.filename}` : null;
+                if (!src) return null;
+
+                const tile = (
+                  <div
+                    key={laurel.id ?? i}
+                    className="relative flex-shrink-0"
+                    style={{
+                      width: `${laurelW}px`,
+                      height: `${LAUREL_HEIGHT_MOBILE}px`,
+                    }}
+                  >
+                    <style>{`
+                      @media (min-width: 768px) {
+                        .laurel-${i} { height: ${LAUREL_HEIGHT_DESKTOP}px !important; }
+                      }
+                    `}</style>
+                    <div
+                      className={`laurel-${i} relative w-full`}
+                      style={{ height: `${LAUREL_HEIGHT_MOBILE}px` }}
+                    >
+                      <Image
+                        src={src}
+                        alt={img.alt ?? "Award laurel"}
+                        fill
+                        className="object-contain object-left"
+                      />
+                    </div>
+                  </div>
+                );
+
+                return laurel.link ? (
+                  <a
+                    key={laurel.id ?? i}
+                    href={laurel.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex-shrink-0"
+                  >
+                    {tile}
+                  </a>
+                ) : tile;
+              })}
             </div>
-            <div className="w-[160px] md:w-[202px] h-[87px] md:h-[110px] relative flex-shrink-0">
-              <Image
-                src="/DIFF-Laurel.png"
-                alt="Dallas International Film Festival Laurel"
-                fill
-                className="object-contain object-left"
-              />
+          ) : (
+            /* Hardcoded laurels until CMS is populated */
+            <div className="flex items-center gap-4 mb-[20px] animate-fade-up animate-delay-100">
+              <div className="w-[160px] md:w-[202px] h-[87px] md:h-[110px] relative flex-shrink-0">
+                <Image
+                  src="/Best of Texas Award_White.png"
+                  alt="Best of Texas Award"
+                  fill
+                  className="object-contain object-left"
+                />
+              </div>
+              <div className="w-[160px] md:w-[202px] h-[87px] md:h-[110px] relative flex-shrink-0">
+                <Image
+                  src="/DIFF-Laurel.png"
+                  alt="Dallas International Film Festival Laurel"
+                  fill
+                  className="object-contain object-left"
+                />
+              </div>
             </div>
-          </div>
+          )}
 
           <div className="grid md:grid-cols-2 gap-10 md:gap-[80px]">
             {/* Col 1: actor-stages SVG → CTA */}
@@ -217,20 +199,14 @@ export default function Home() {
                 className="w-full max-w-[593px] h-auto"
               />
               <div className="w-fit mt-[40px] md:mt-[69px]">
-                <Button href={showScreeningsCta ? "#screenings" : "/press"}>
-                  {showScreeningsCta ? "VIEW SCREENINGS" : "VIEW PRESS"}
-                </Button>
+                <Button href="/screenings">VIEW SCREENINGS</Button>
               </div>
             </div>
 
-            {/* Col 2: synopsis, director, year/runtime — aligns with actor-stages */}
+            {/* Col 2: synopsis, director, year/runtime */}
             <div className="flex flex-col gap-[40px] animate-fade-up animate-delay-400">
               <p className="text-foreground text-[16px] leading-[26px] max-w-[442px]">
-                After the tumultuous breakup of his band, Ben Garza embarks on
-                his first-ever solo tour. Life on the road feels different now,
-                and Ben must find his footing alongside Rita, his steadfast tour
-                manager, and Jessie Ramos, his charismatic,
-                spotlight-stealing&nbsp;opening&nbsp;act.
+                {logline}
               </p>
 
               <div className="flex flex-col gap-[35px]">
@@ -239,7 +215,7 @@ export default function Home() {
                     DIRECTED BY
                   </p>
                   <p className="text-foreground font-bold text-[18px] leading-[28px]">
-                    RYAN BOOTH
+                    {directedBy}
                   </p>
                 </div>
 
@@ -249,7 +225,7 @@ export default function Home() {
                       YEAR
                     </p>
                     <p className="text-foreground font-bold text-[16px] leading-[24px]">
-                      2026
+                      {year}
                     </p>
                   </div>
                   <div className="flex flex-col gap-[4px]">
@@ -257,7 +233,7 @@ export default function Home() {
                       RUNTIME
                     </p>
                     <p className="text-foreground font-bold text-[16px] leading-[24px]">
-                      94 MIN
+                      {runtime}
                     </p>
                   </div>
                 </div>
@@ -267,18 +243,15 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ═══ SXSW 2026 SCREENINGS (auto-hides when all past) ═══ */}
-      <ScreeningsSection />
-
       {/* ═══ FEATURING ═══════════════════════════════════════ */}
-      <FeaturingSection characters={characters} />
+      {!hasNoCastInCMS && <FeaturingSection characters={characters} />}
 
       {/* ═══ ABOUT THE FILM ═══════════════════════════════════ */}
       <section className="bg-background py-[140px] px-6 md:px-[80px]">
         <ScrollReveal>
           <div className="flex flex-col gap-[40px] items-center w-full">
             <h2 className="font-display text-foreground text-[32px] md:text-[48px] leading-[48px] tracking-[-2.4px] uppercase text-center reveal">
-              ABOUT THE FILM
+              {homepage.aboutHeading ?? "ABOUT THE FILM"}
             </h2>
             <div className="flex flex-col gap-[24px] items-center opacity-90 w-full">
               <p className="text-foreground text-[16px] leading-[26px] max-w-[646px] text-left reveal">
@@ -329,7 +302,7 @@ export default function Home() {
                 audience.&rdquo;
               </p>
               <p className="text-foreground font-bold text-[14px] leading-[20px] reveal">
-                — RYAN BOOTH
+                — {homepage.directorName ?? "RYAN BOOTH"}
               </p>
             </div>
           </div>
@@ -374,7 +347,7 @@ export default function Home() {
               <Button href="/share" variant="secondary">
                 VIEW ASSETS
               </Button>
-              <CopyButton url="https://stagesfilm.com" />
+              <CopyButton url="https://stages.movie" />
             </div>
           </div>
         </ScrollReveal>

@@ -3,7 +3,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import { hasUpcomingScreenings } from "@/lib/screenings";
 
 const studioLogos = [
   { src: "/studio-logos/Logo-LiveNationStudios 1.svg", alt: "Live Nation Studios", width: 160, height: 40 },
@@ -137,7 +136,7 @@ export function Footer() {
             <div className="flex flex-col gap-[8px]">
               {[
                 { label: "Info", href: "/" },
-                ...(hasUpcomingScreenings() ? [{ label: "Screenings", href: "/#screenings" }] : []),
+                { label: "Screenings", href: "/screenings" },
                 { label: "Press", href: "/press" },
                 { label: "Share", href: "/share" },
               ].map((link) => (

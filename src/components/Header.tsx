@@ -1,23 +1,18 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
-import { useState, useEffect, useCallback } from "react";
-import { hasUpcomingScreenings } from "@/lib/screenings";
+import { usePathname } from "next/navigation";
+import { useState, useEffect } from "react";
 
-function getNavLinks() {
-  const links = [
-    { href: "/", label: "INFO" },
-    ...(hasUpcomingScreenings() ? [{ href: "/#screenings", label: "SCREENINGS" }] : []),
-    { href: "/press", label: "PRESS" },
-    { href: "/share", label: "SHARE" },
-  ];
-  return links;
-}
+const NAV_LINKS = [
+  { href: "/", label: "INFO" },
+  { href: "/screenings", label: "SCREENINGS" },
+  { href: "/press", label: "PRESS" },
+  { href: "/share", label: "SHARE" },
+];
 
 export function Header() {
   const pathname = usePathname();
-  const router = useRouter();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -30,28 +25,6 @@ export function Header() {
 
   const isOverHero = pathname === "/" && !scrolled;
 
-  const handleNavClick = useCallback(
-    (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-      const hashIdx = href.indexOf("#");
-      if (hashIdx === -1) return;
-
-      const basePath = href.slice(0, hashIdx) || "/";
-      const hash = href.slice(hashIdx);
-
-      if (pathname === basePath) {
-        e.preventDefault();
-        const el = document.querySelector(hash);
-        if (el) {
-          el.scrollIntoView({ behavior: "smooth", block: "start" });
-        }
-      } else {
-        e.preventDefault();
-        router.push(href);
-      }
-    },
-    [pathname, router]
-  );
-
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
@@ -63,26 +36,22 @@ export function Header() {
       <div className="w-full px-6 md:px-[80px] h-[80px] flex items-center justify-between">
         <Link
           href="/"
-          className={`text-2xl font-display tracking-[-0.6px] transition-colors ${
-            isOverHero ? "text-foreground" : "text-foreground"
-          } hover:opacity-80`}
+          className="text-2xl font-display tracking-[-0.6px] transition-colors text-foreground hover:opacity-80"
         >
           STAGES
         </Link>
 
         {/* Desktop nav */}
         <nav className="hidden md:flex items-center gap-[32px]">
-          {getNavLinks().map((link) => {
-            const isActive =
-              (link.href === "/" && pathname === "/") ||
-              (link.href !== "/" && pathname.startsWith(link.href.split("#")[0]) && link.href.split("#")[0] !== "/");
-            const active = isActive || (link.href === "/" && pathname === "/");
-
+          {NAV_LINKS.map((link) => {
+            const active =
+              link.href === "/"
+                ? pathname === "/"
+                : pathname.startsWith(link.href);
             return (
               <Link
                 key={link.href}
                 href={link.href}
-                onClick={(e) => handleNavClick(e, link.href)}
                 className={`font-meta text-sm font-bold tracking-[0.35px] transition-colors ${
                   active ? "text-accent" : "text-foreground/90 hover:text-foreground"
                 }`}
@@ -113,28 +82,16 @@ export function Header() {
       {/* Mobile menu */}
       {mobileOpen && (
         <nav className="md:hidden border-t border-border bg-background px-6 py-6 flex flex-col gap-5">
-          {getNavLinks().map((link) => (
+          {NAV_LINKS.map((link) => (
             <Link
               key={link.href}
               href={link.href}
               className="font-meta text-sm font-bold tracking-[0.35px] text-foreground"
-              onClick={(e) => {
-                handleNavClick(e, link.href);
-                setMobileOpen(false);
-              }}
+              onClick={() => setMobileOpen(false)}
             >
               {link.label}
             </Link>
           ))}
-          <Link
-            href="https://schedule.sxsw.com/2026/films/2253651"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="font-meta mt-2 inline-flex items-center justify-center h-[52px] px-8 bg-accent text-[#0a0a0a] font-bold text-sm tracking-[0.35px] hover:bg-accent-hover transition-colors"
-            onClick={() => setMobileOpen(false)}
-          >
-            GET TICKETS
-          </Link>
         </nav>
       )}
     </header>

@@ -151,6 +151,138 @@ body {
   left: 0 !important;
 }
 
+/* ─── Lexical rich text renderer ────────────────────────── */
+
+.lexical-content {
+  font-family: var(--font-inter-family), ui-sans-serif, system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 28px;
+  color: rgba(245, 245, 245, 0.80);
+}
+
+/*
+ * Prose elements: capped at readable line length, centered.
+ * Block-level rich elements (figure, video, logo bar) are NOT
+ * constrained here — they manage their own width via component classes.
+ */
+.lexical-content p,
+.lexical-content h2,
+.lexical-content h3,
+.lexical-content h4,
+.lexical-content ul,
+.lexical-content ol,
+.lexical-content blockquote {
+  max-width: 60ch;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.lexical-content p {
+  margin-bottom: 20px;
+}
+.lexical-content p:last-child { margin-bottom: 0; }
+
+.lexical-content h2 {
+  font-family: var(--font-display, inherit);
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+  color: rgba(245, 245, 245, 1);
+  margin-top: 48px;
+  margin-bottom: 16px;
+  line-height: 1.1;
+}
+.lexical-content h3 {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: rgba(245, 245, 245, 1);
+  margin-top: 36px;
+  margin-bottom: 12px;
+}
+.lexical-content h4 {
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(245, 245, 245, 0.60);
+  margin-top: 28px;
+  margin-bottom: 8px;
+}
+
+.lexical-content strong { color: rgba(245, 245, 245, 1); font-weight: 700; }
+.lexical-content em { font-style: italic; }
+.lexical-content u  { text-decoration: underline; text-underline-offset: 3px; }
+
+.lexical-content a {
+  color: var(--color-accent, #f5f5f5);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: opacity 0.15s;
+}
+.lexical-content a:hover { opacity: 0.75; }
+
+.lexical-content ul,
+.lexical-content ol {
+  margin-bottom: 20px;
+  padding-left: 24px;
+}
+.lexical-content ul { list-style-type: disc; }
+.lexical-content ol { list-style-type: decimal; }
+.lexical-content li { margin-bottom: 6px; }
+.lexical-content li:last-child { margin-bottom: 0; }
+
+.lexical-content blockquote {
+  border-left: 2px solid var(--color-accent, rgba(245,245,245,0.3));
+  padding-left: 20px;
+  margin-top: 28px;
+  margin-bottom: 28px;
+  color: rgba(245, 245, 245, 0.65);
+  font-style: italic;
+}
+
+.lexical-content hr {
+  border: none;
+  border-top: 1px solid rgba(245, 245, 245, 0.12);
+  margin: 40px auto;
+  max-width: 60ch;
+}
+
+/* Text Sections: the container controls width, so inner prose is unconstrained */
+.lexical-content--unstyled p,
+.lexical-content--unstyled h2,
+.lexical-content--unstyled h3,
+.lexical-content--unstyled h4,
+.lexical-content--unstyled ul,
+.lexical-content--unstyled ol,
+.lexical-content--unstyled blockquote {
+  max-width: none;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+/* Text alignment (from AlignFeature) */
+.lexical-content [style*="text-align: center"] { text-align: center; }
+.lexical-content [style*="text-align: right"]  { text-align: right; }
+.lexical-content [style*="text-align: justify"]{ text-align: justify; }
+
+/* Upload / image nodes — figures break out of the prose column */
+.lexical-content figure {
+  margin-left: auto;
+  margin-right: auto;
+}
+.lexical-content img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 2px;
+  display: block;
+}
+
+/* Video embed blocks */
+.lexical-content iframe {
+  border: none;
+}
+
 /* ─── Polaroid gallery ───────────────────────────────────── */
 
 .polaroid-card {
