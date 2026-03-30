@@ -1,1 +1,6 @@
-approveBuilds: esbuild sharp
+onlyBuiltDependencies:
+  - esbuild
+  - sharp
+  - bufferutil
+  - utf-8-validate
+  - unrs-resolver
