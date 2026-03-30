@@ -81,6 +81,12 @@ export default buildConfig({
     importMap: {
       baseDir: path.resolve(dirname),
     },
+    components: {
+      graphics: {
+        Logo: "/src/components/payload/AdminLogo",
+        Icon: "/src/components/payload/AdminIcon",
+      },
+    },
   },
   bin: [
     {
