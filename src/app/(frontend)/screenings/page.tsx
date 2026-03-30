@@ -183,35 +183,47 @@ export default async function ScreeningsPage() {
           </p>
         )}
 
-        {groups.map((group) => (
-          <div key={group.label} className="mb-[72px] last:mb-0">
-            {/* Group heading */}
-            <h2 className="reveal font-meta font-bold text-foreground/40 text-[11px] tracking-[0.12em] uppercase mb-[16px] pl-[24px]">
-              {group.label}
-            </h2>
-
-            {/* Upcoming screenings */}
-            {group.upcoming.length > 0 && (
+        {/* Upcoming screenings by group */}
+        {groups.map((group) =>
+          group.upcoming.length > 0 && (
+            <div key={group.label} className="mb-[72px]">
+              <h2 className="reveal font-meta font-bold text-foreground/40 text-[11px] tracking-[0.12em] uppercase mb-[16px] pl-[24px]">
+                {group.label}
+              </h2>
               <div className="flex flex-col border-t border-[rgba(245,245,245,0.2)]">
                 {group.upcoming.map((s, i) => (
                   <ScreeningRow key={s.id} screening={s} index={i} />
                 ))}
               </div>
-            )}
+            </div>
+          )
+        )}
 
-            {/* Past screenings — muted, collapsed visually */}
-            {group.past.length > 0 && (
-              <div className={`flex flex-col ${group.upcoming.length > 0 ? "mt-[24px]" : "border-t border-[rgba(245,245,245,0.2)]"}`}>
-                <h2 className="reveal font-meta font-bold text-foreground/30 text-[11px] tracking-[0.12em] uppercase pl-[24px] py-[12px] border-b border-[rgba(245,245,245,0.08)]">
-                  Past Events
-                </h2>
-                {group.past.map((s, i) => (
-                  <ScreeningRow key={s.id} screening={s} index={i} isPast />
-                ))}
-              </div>
+        {/* Past events — all groups combined under one heading */}
+        {groups.some((g) => g.past.length > 0) && (
+          <div className="mt-[24px]">
+            <h2
+              className="reveal font-display text-foreground/40 leading-[1] tracking-[-2px] uppercase mb-[32px]"
+              style={{ fontSize: "clamp(1.5rem, 4vw, 2.5rem)" }}
+            >
+              PAST EVENTS
+            </h2>
+            {groups.map((group) =>
+              group.past.length > 0 && (
+                <div key={`past-${group.label}`} className="mb-[48px] last:mb-0">
+                  <h3 className="reveal font-meta font-bold text-foreground/30 text-[11px] tracking-[0.12em] uppercase mb-[16px] pl-[24px]">
+                    {group.label}
+                  </h3>
+                  <div className="flex flex-col border-t border-[rgba(245,245,245,0.1)]">
+                    {group.past.map((s, i) => (
+                      <ScreeningRow key={s.id} screening={s} index={i} isPast />
+                    ))}
+                  </div>
+                </div>
+              )
             )}
           </div>
-        ))}
+        )}
 
         {/* CTA back to film info */}
         <div className="reveal mt-[80px] pt-[48px] border-t border-[rgba(245,245,245,0.1)]">
