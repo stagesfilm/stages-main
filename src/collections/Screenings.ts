@@ -72,9 +72,10 @@ export const Screenings: CollectionConfig = {
     {
       name: "eventGroup",
       type: "text",
-      required: true,
       admin: {
-        description: 'Groups screenings on the page, e.g. "SXSW 2026", "Cannes 2026"',
+        description:
+          "Optional. Leave empty for general public listings (no sub-heading). " +
+          'Add a label to group events, e.g. "SXSW 2026", "Regional tour".',
       },
     },
     {

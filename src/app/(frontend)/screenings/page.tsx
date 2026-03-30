@@ -20,20 +20,32 @@ function isUpcoming(eventDate: string): boolean {
   return eventDate >= today;
 }
 
+const GENERAL_GROUP_KEY = "__general";
+
 type ScreeningGroup = {
+  /** Stable map key; GENERAL_GROUP_KEY when event group is unset */
+  key: string;
+  /** Shown as sub-heading; empty for general / ungrouped screenings */
   label: string;
   upcoming: Screening[];
   past: Screening[];
 };
 
+function bucketForEventGroup(raw: string | null | undefined): { key: string; label: string } {
+  const t = typeof raw === "string" ? raw.trim() : "";
+  if (!t) return { key: GENERAL_GROUP_KEY, label: "" };
+  return { key: t, label: t };
+}
+
 function groupScreenings(screenings: Screening[]): ScreeningGroup[] {
   const map = new Map<string, ScreeningGroup>();
 
   for (const s of screenings) {
-    if (!map.has(s.eventGroup)) {
-      map.set(s.eventGroup, { label: s.eventGroup, upcoming: [], past: [] });
+    const { key, label } = bucketForEventGroup(s.eventGroup);
+    if (!map.has(key)) {
+      map.set(key, { key, label, upcoming: [], past: [] });
     }
-    const group = map.get(s.eventGroup)!;
+    const group = map.get(key)!;
     if (isUpcoming(s.eventDate)) {
       group.upcoming.push(s);
     } else {
@@ -41,11 +53,17 @@ function groupScreenings(screenings: Screening[]): ScreeningGroup[] {
     }
   }
 
-  // Sort groups: those with upcoming screenings first, then past-only groups
+  // Sort: upcoming groups first; within that, named groups before unlabeled; then A–Z
   return Array.from(map.values()).sort((a, b) => {
     const aHasUpcoming = a.upcoming.length > 0 ? 0 : 1;
     const bHasUpcoming = b.upcoming.length > 0 ? 0 : 1;
-    return aHasUpcoming - bHasUpcoming;
+    if (aHasUpcoming !== bHasUpcoming) return aHasUpcoming - bHasUpcoming;
+
+    const aGeneral = a.key === GENERAL_GROUP_KEY ? 1 : 0;
+    const bGeneral = b.key === GENERAL_GROUP_KEY ? 1 : 0;
+    if (aGeneral !== bGeneral) return aGeneral - bGeneral;
+
+    return a.label.localeCompare(b.label, undefined, { sensitivity: "base" });
   });
 }
 
@@ -186,10 +204,12 @@ export default async function ScreeningsPage() {
         {/* Upcoming screenings by group */}
         {groups.map((group) =>
           group.upcoming.length > 0 && (
-            <div key={group.label} className="mb-[72px]">
-              <h2 className="reveal font-meta font-bold text-foreground/40 text-[11px] tracking-[0.12em] uppercase mb-[16px] pl-[24px]">
-                {group.label}
-              </h2>
+            <div key={group.key} className="mb-[72px]">
+              {group.label && (
+                <h2 className="reveal font-meta font-bold text-foreground/40 text-[11px] tracking-[0.12em] uppercase mb-[16px] pl-[24px]">
+                  {group.label}
+                </h2>
+              )}
               <div className="flex flex-col border-t border-[rgba(245,245,245,0.2)]">
                 {group.upcoming.map((s, i) => (
                   <ScreeningRow key={s.id} screening={s} index={i} />
@@ -210,10 +230,12 @@ export default async function ScreeningsPage() {
             </h2>
             {groups.map((group) =>
               group.past.length > 0 && (
-                <div key={`past-${group.label}`} className="mb-[48px] last:mb-0">
-                  <h3 className="reveal font-meta font-bold text-foreground/30 text-[11px] tracking-[0.12em] uppercase mb-[16px] pl-[24px]">
-                    {group.label}
-                  </h3>
+                <div key={`past-${group.key}`} className="mb-[48px] last:mb-0">
+                  {group.label && (
+                    <h3 className="reveal font-meta font-bold text-foreground/30 text-[11px] tracking-[0.12em] uppercase mb-[16px] pl-[24px]">
+                      {group.label}
+                    </h3>
+                  )}
                   <div className="flex flex-col border-t border-[rgba(245,245,245,0.1)]">
                     {group.past.map((s, i) => (
                       <ScreeningRow key={s.id} screening={s} index={i} isPast />

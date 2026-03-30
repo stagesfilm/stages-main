@@ -212,9 +212,9 @@ export interface Screening {
    */
   eventDate: string;
   /**
-   * Groups screenings on the page, e.g. "SXSW 2026", "Cannes 2026"
+   * Optional. Leave empty for general public listings (no sub-heading). Add a label to group events, e.g. "SXSW 2026", "Regional tour".
    */
-  eventGroup: string;
+  eventGroup?: string | null;
   /**
    * Optional note, e.g. "*Q&A to follow with cast and filmmakers"
    */
