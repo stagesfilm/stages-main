@@ -118,6 +118,7 @@ export default async function SharePage() {
                       fill
                       className="object-cover transition-transform duration-500 group-hover:scale-[1.02]"
                       sizes="(max-width: 768px) 50vw, 33vw"
+                      loading={i < 3 ? "eager" : "lazy"}
                       unoptimized={src.startsWith("/press-ads/")}
                     />
                   </div>
@@ -157,6 +158,7 @@ export default async function SharePage() {
                       fill
                       className="object-cover transition-transform duration-500 group-hover:scale-[1.02]"
                       sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                      loading="lazy"
                       unoptimized={src.startsWith("/screen-previews/")}
                     />
                   </div>
