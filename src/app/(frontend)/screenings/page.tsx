@@ -171,12 +171,14 @@ export default async function ScreeningsPage() {
         <h1 className="reveal font-display text-foreground text-[40px] md:text-[72px] leading-[1] tracking-[-3.6px] uppercase mb-[12px]">
           SCREENINGS
         </h1>
-        <p className="reveal font-meta text-foreground/60 text-[14px] leading-[22px] mb-[64px]">
-          STAGES — A Film by Ryan Booth
-        </p>
+        {!hasAnyUpcoming && groups.length > 0 && (
+          <p className="reveal font-meta text-foreground/50 text-[15px] leading-[22px] mb-[64px]">
+            No upcoming events scheduled. Check back soon for new screenings.
+          </p>
+        )}
 
         {groups.length === 0 && (
-          <p className="font-meta text-foreground/60 text-[16px]">
+          <p className="reveal font-meta text-foreground/50 text-[15px] leading-[22px] mb-[64px]">
             No screenings currently scheduled. Check back soon.
           </p>
         )}
@@ -199,12 +201,10 @@ export default async function ScreeningsPage() {
 
             {/* Past screenings — muted, collapsed visually */}
             {group.past.length > 0 && (
-              <div className={`flex flex-col ${group.upcoming.length > 0 ? "mt-[2px]" : "border-t border-[rgba(245,245,245,0.2)]"}`}>
-                {group.upcoming.length === 0 && (
-                  <p className="font-meta text-foreground/30 text-[11px] tracking-[0.1em] uppercase pl-[24px] py-[10px] border-b border-[rgba(245,245,245,0.06)]">
-                    Past
-                  </p>
-                )}
+              <div className={`flex flex-col ${group.upcoming.length > 0 ? "mt-[24px]" : "border-t border-[rgba(245,245,245,0.2)]"}`}>
+                <h2 className="reveal font-meta font-bold text-foreground/30 text-[11px] tracking-[0.12em] uppercase pl-[24px] py-[12px] border-b border-[rgba(245,245,245,0.08)]">
+                  Past Events
+                </h2>
                 {group.past.map((s, i) => (
                   <ScreeningRow key={s.id} screening={s} index={i} isPast />
                 ))}
