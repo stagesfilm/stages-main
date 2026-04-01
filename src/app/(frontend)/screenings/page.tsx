@@ -186,7 +186,7 @@ export default async function ScreeningsPage() {
     <div className="bg-background min-h-screen">
       <ScrollReveal className="w-full px-6 md:px-[80px] pt-[140px] pb-20">
         {/* Page header */}
-        <h1 className="reveal font-display text-foreground text-[40px] md:text-[72px] leading-[1] tracking-[-3.6px] uppercase mb-[12px]">
+        <h1 className="reveal font-display text-foreground text-[40px] md:text-[72px] leading-[1] tracking-[-3.6px] uppercase mb-[48px]">
           SCREENINGS
         </h1>
         {!hasAnyUpcoming && groups.length > 0 && (
@@ -206,7 +206,7 @@ export default async function ScreeningsPage() {
           group.upcoming.length > 0 && (
             <div key={group.key} className="mb-[72px]">
               {group.label && (
-                <h2 className="reveal font-meta font-bold text-foreground/40 text-[11px] tracking-[0.12em] uppercase mb-[16px] pl-[24px]">
+                <h2 className="reveal font-meta font-bold text-foreground/40 text-[11px] tracking-[0.12em] uppercase mb-[16px]">
                   {group.label}
                 </h2>
               )}
@@ -232,7 +232,7 @@ export default async function ScreeningsPage() {
               group.past.length > 0 && (
                 <div key={`past-${group.key}`} className="mb-[48px] last:mb-0">
                   {group.label && (
-                    <h3 className="reveal font-meta font-bold text-foreground/30 text-[11px] tracking-[0.12em] uppercase mb-[16px] pl-[24px]">
+                    <h3 className="reveal font-meta font-bold text-foreground/30 text-[11px] tracking-[0.12em] uppercase mb-[16px]">
                       {group.label}
                     </h3>
                   )}
