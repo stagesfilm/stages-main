@@ -32,6 +32,9 @@ export default buildConfig({
     {
       slug: "media",
       admin: { group: "System" },
+      access: {
+        read: () => true,
+      },
       upload: {
         // In production (Vercel), files go to Blob Storage (see plugins below).
         // Locally they land in public/media which is gitignored.
