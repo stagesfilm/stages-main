@@ -161,10 +161,8 @@ export default async function PressPage() {
             <div className="space-y-10">
               {reviews.map((review) => {
                 const laurelImg = review.laurelImage as Media | null | undefined;
-                // Prefer uploaded media; fall back to public path string
-                const laurelSrc = laurelImg?.filename
-                  ? `/media/${laurelImg.filename}`
-                  : review.laurelImageUrl ?? null;
+                // Prefer uploaded media URL; fall back to public path string
+                const laurelSrc = laurelImg?.url ?? review.laurelImageUrl ?? null;
 
                 return (
                   <div key={review.id} className="flex flex-col sm:flex-row gap-8 items-start">

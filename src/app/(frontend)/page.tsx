@@ -123,7 +123,7 @@ export default async function Home() {
             >
               {laurels.map((laurel, i) => {
                 const img = laurel.image as Media;
-                const src = img?.filename ? `/media/${img.filename}` : null;
+                const src = img?.url ?? null;
                 if (!src) return null;
 
                 const tile = (
