@@ -10,8 +10,8 @@ export const metadata: Metadata = {
   description: "Find screenings and upcoming events for STAGES, a film by Ryan Booth.",
 };
 
-// Revalidate once per hour so screening data stays fresh without a full rebuild
-export const revalidate = 3600;
+// Revalidate every 5 minutes so new screenings appear quickly
+export const revalidate = 300;
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
@@ -78,7 +78,7 @@ function ScreeningRow({ screening, index, isPast }: { screening: Screening; inde
     if (screening.ticketingType === "luma" && screening.lumaEventUrl) {
       return <LumaCheckout lumaEventUrl={screening.lumaEventUrl} label="RSVP" />;
     }
-    const href = screening.ticketUrl ?? "#";
+    if (!screening.ticketUrl) return null;
     return (
       <span className="font-meta text-accent text-[14px] font-bold tracking-[0.35px] whitespace-nowrap shrink-0 group-hover:translate-x-1 transition-transform">
         TICKETS →
@@ -135,8 +135,8 @@ function ScreeningRow({ screening, index, isPast }: { screening: Screening; inde
     </>
   );
 
-  // Luma rows don't need an outer <Link> — the LumaCheckout button is the CTA
-  if (screening.ticketingType === "luma") {
+  // Luma rows and rows without a ticket URL don't need an outer <Link>
+  if (screening.ticketingType === "luma" || !screening.ticketUrl) {
     return (
       <div
         key={screening.id}
@@ -151,7 +151,7 @@ function ScreeningRow({ screening, index, isPast }: { screening: Screening; inde
   return (
     <Link
       key={screening.id}
-      href={screening.ticketUrl ?? "#"}
+      href={screening.ticketUrl}
       target="_blank"
       rel="noopener noreferrer"
       className={rowClasses}
