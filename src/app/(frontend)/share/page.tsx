@@ -71,14 +71,14 @@ export default async function SharePage() {
   const promoSrcs: Array<{ src: string; label?: string }> =
     cmsPromoAssets.length > 0
       ? cmsPromoAssets.map((a) => ({
-          src: `/media/${(a.image as Media).filename}`,
+          src: (a.image as Media).url ?? `/media/${(a.image as Media).filename}`,
           label: a.label ?? undefined,
         }))
       : FALLBACK_PRESS_ADS.map((src) => ({ src }));
 
   const stillSrcs: Array<{ src: string }> =
     cmsStills.length > 0
-      ? cmsStills.map((a) => ({ src: `/media/${(a.image as Media).filename}` }))
+      ? cmsStills.map((a) => ({ src: (a.image as Media).url ?? `/media/${(a.image as Media).filename}` }))
       : FALLBACK_PRESS_STILLS.map((src) => ({ src }));
 
   return (

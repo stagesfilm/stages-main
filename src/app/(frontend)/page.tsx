@@ -8,7 +8,7 @@ import { HeroVideo } from "@/components/HeroVideo";
 import { getPayloadClient } from "@/lib/payload";
 import type { Homepage, Cast, Media } from "@/payload-types";
 
-export const revalidate = 3600;
+export const revalidate = 60;
 
 // ─── JSON-LD (static — schema.org Movie) ─────────────────────────────────────
 
@@ -77,8 +77,8 @@ export default async function Home() {
     actorName: c.actorName,
     actorUrl: c.actorUrl ?? undefined,
     // If images are populated as Media objects, use their URL; else keep the stored string
-    image1: typeof c.primaryImage === "object" ? `/media/${(c.primaryImage as Media).filename}` : String(c.primaryImage),
-    image2: typeof c.hoverImage === "object" ? `/media/${(c.hoverImage as Media).filename}` : String(c.hoverImage),
+    image1: typeof c.primaryImage === "object" ? ((c.primaryImage as Media).url ?? `/media/${(c.primaryImage as Media).filename}`) : String(c.primaryImage),
+    image2: typeof c.hoverImage === "object" ? ((c.hoverImage as Media).url ?? `/media/${(c.hoverImage as Media).filename}`) : String(c.hoverImage),
     image1Alt: `${c.actorName} as ${c.characterName}`,
     image2Alt: `${c.characterName}`,
     quote: c.quote ?? undefined,
