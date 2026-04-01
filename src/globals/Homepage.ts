@@ -34,19 +34,24 @@ export const Homepage: GlobalConfig = {
               name: "laurels",
               type: "array",
               admin: {
-                description: "Award laurels displayed above the title. Drag to reorder. They auto-shrink as more are added.",
+                description:
+                  "Award laurels displayed above the title. Drag to reorder. To add a laurel: click Add Laurel → click the image field → Upload a file (or choose an existing one) → fill in Alt text → Save. They auto-shrink as more are added.",
+                initCollapsed: false,
               },
               fields: [
                 {
                   name: "image",
                   type: "upload",
                   relationTo: "media",
-                  required: true,
+                  required: false,
+                  admin: {
+                    description: "Click Upload to add a new image, or Choose Existing to pick one already in Media.",
+                  },
                 },
                 {
                   name: "link",
                   type: "text",
-                  admin: { description: "Optional link URL for this laurel" },
+                  admin: { description: "Optional link URL for this laurel (e.g. https://sxsw.com)" },
                 },
               ],
             },
