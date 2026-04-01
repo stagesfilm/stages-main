@@ -34,24 +34,6 @@ const jsonLd = {
   url: "https://stages.movie",
 };
 
-// ─── Laurels container ────────────────────────────────────────────────────────
-// Max-width matches actor-stages SVG (593px). Each laurel shrinks as more are
-// added, wrapping to a second row rather than overflowing.
-// Formula: each laurel gets an equal share, capped at 202px (2-laurel baseline)
-// and floored at 80px (readable minimum). Gap accounts for the 16px gap.
-
-const LAUREL_MAX_CONTAINER = 593; // matches max-w-[593px] of actor-stages SVG
-const LAUREL_HEIGHT_DESKTOP = 110;
-const LAUREL_HEIGHT_MOBILE = 87;
-const LAUREL_GAP = 16;
-const LAUREL_MAX_W = 202;
-const LAUREL_MIN_W = 80;
-
-function laurelWidth(count: number): number {
-  if (count <= 0) return LAUREL_MAX_W;
-  const share = (LAUREL_MAX_CONTAINER - (count - 1) * LAUREL_GAP) / count;
-  return Math.max(LAUREL_MIN_W, Math.min(LAUREL_MAX_W, Math.floor(share)));
-}
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
@@ -90,8 +72,6 @@ export default async function Home() {
     image: number | Media;
     link?: string | null;
   }>;
-  const laurelW = laurelWidth(laurels.length);
-
   // If no CMS cast yet, fall back to hardcoded characters for visual continuity
   const hasNoCastInCMS = castItems.length === 0;
 
@@ -115,83 +95,45 @@ export default async function Home() {
 
         <div className="relative pt-[200px] md:pt-[240px] px-6 md:px-[80px] pb-[96px]">
 
-          {/* Award laurels — dynamic, constrained to SVG width, wrapping */}
-          {laurels.length > 0 ? (
-            <div
-              className="flex flex-wrap gap-4 mb-[20px] animate-fade-up animate-delay-100"
-              style={{ maxWidth: `${LAUREL_MAX_CONTAINER}px` }}
-            >
-              {laurels.map((laurel, i) => {
-                const img = laurel.image as Media;
-                const src = img?.url ?? null;
-                if (!src) return null;
-
-                const tile = (
-                  <div
-                    key={laurel.id ?? i}
-                    className="relative flex-shrink-0"
-                    style={{
-                      width: `${laurelW}px`,
-                      height: `${LAUREL_HEIGHT_MOBILE}px`,
-                    }}
-                  >
-                    <style>{`
-                      @media (min-width: 768px) {
-                        .laurel-${i} { height: ${LAUREL_HEIGHT_DESKTOP}px !important; }
-                      }
-                    `}</style>
-                    <div
-                      className={`laurel-${i} relative w-full`}
-                      style={{ height: `${LAUREL_HEIGHT_MOBILE}px` }}
-                    >
-                      <Image
-                        src={src}
-                        alt={img.alt ?? "Award laurel"}
-                        fill
-                        className="object-contain object-left"
-                      />
-                    </div>
-                  </div>
-                );
-
-                return laurel.link ? (
-                  <a
-                    key={laurel.id ?? i}
-                    href={laurel.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex-shrink-0"
-                  >
-                    {tile}
-                  </a>
-                ) : tile;
-              })}
-            </div>
-          ) : (
-            /* Hardcoded laurels until CMS is populated */
-            <div className="flex items-center gap-4 mb-[20px] animate-fade-up animate-delay-100">
-              <div className="w-[160px] md:w-[202px] h-[87px] md:h-[110px] relative flex-shrink-0">
-                <Image
-                  src="/Best of Texas Award_White.png"
-                  alt="Best of Texas Award"
-                  fill
-                  className="object-contain object-left"
-                />
-              </div>
-              <div className="w-[160px] md:w-[202px] h-[87px] md:h-[110px] relative flex-shrink-0">
-                <Image
-                  src="/DIFF-Laurel.png"
-                  alt="Dallas International Film Festival Laurel"
-                  fill
-                  className="object-contain object-left"
-                />
-              </div>
-            </div>
-          )}
-
           <div className="grid md:grid-cols-2 gap-10 md:gap-[80px]">
-            {/* Col 1: actor-stages SVG → CTA */}
+            {/* Col 1: laurels + actor-stages SVG → CTA */}
             <div className="flex flex-col animate-fade-up animate-delay-200">
+
+              {/* Award laurels — flex-1 so they fill the column width without wrapping */}
+              {laurels.length > 0 ? (
+                <div className="flex gap-3 md:gap-4 mb-[20px]">
+                  {laurels.map((laurel, i) => {
+                    const img = laurel.image as Media;
+                    const src = img?.url ?? null;
+                    if (!src) return null;
+                    return laurel.link ? (
+                      <a
+                        key={laurel.id ?? i}
+                        href={laurel.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="relative flex-1 min-w-0 h-[87px] md:h-[110px]"
+                      >
+                        <Image src={src} alt={img.alt ?? "Award laurel"} fill className="object-contain object-left" />
+                      </a>
+                    ) : (
+                      <div key={laurel.id ?? i} className="relative flex-1 min-w-0 h-[87px] md:h-[110px]">
+                        <Image src={src} alt={img.alt ?? "Award laurel"} fill className="object-contain object-left" />
+                      </div>
+                    );
+                  })}
+                </div>
+              ) : (
+                <div className="flex items-center gap-4 mb-[20px]">
+                  <div className="w-[160px] md:w-[202px] h-[87px] md:h-[110px] relative flex-shrink-0">
+                    <Image src="/Best of Texas Award_White.png" alt="Best of Texas Award" fill className="object-contain object-left" />
+                  </div>
+                  <div className="w-[160px] md:w-[202px] h-[87px] md:h-[110px] relative flex-shrink-0">
+                    <Image src="/DIFF-Laurel.png" alt="Dallas International Film Festival Laurel" fill className="object-contain object-left" />
+                  </div>
+                </div>
+              )}
+
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src="/actor-stages.svg"
